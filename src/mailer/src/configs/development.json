@@ -1,0 +1,33 @@
+{
+  "MAILER": {
+    "GOOGLE": {
+      "HOST": "smtp.gmail.com",
+      "PORT": 465
+    },
+    "HOSTINGER": {
+      "HOST": "smtp.titan.email",
+      "PORT": 465
+    }
+  },
+
+  "PRIVATE_INFORM": {
+    "EMAIL": {
+      "GOOGLE": {
+        "ADDRESS": "bit001.notifier@gmail.com",
+        "PASSWORD": "vusbcargrcbhmpeb"
+      },
+      "HOSTINGER": {
+        "ADDRESS": "support@softzone.ai",
+        "PASSWORD": "v,x}%xI;pm%g WD"
+      }
+    },
+    "PHONE": "+15619359981",
+    "TWILIO": {
+      "ACCOUNT_SID": "AC35919a032b5b6c0b256aa1dd98a5d830",
+      "AUTH_TOKEN": "0c850bdc8893099869fb49740cf2e5e8"
+    }
+  },
+  "RETRY": {
+    "MAX_RETRY_TIME": 3
+  }
+}
