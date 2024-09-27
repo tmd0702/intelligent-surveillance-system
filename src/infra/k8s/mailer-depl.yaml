@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailer-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailer
+  template:
+    metadata:
+      labels:
+        app: mailer
+    spec:
+      containers:
+        - name: mailer
+          image: ductruong1/mailer-srv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mailer-srv
+spec:
+  selector:
+    app: mailer
+  ports:
+    - name: mailer
+      protocol: TCP
+      port: 3851
+      targetPort: 3851
