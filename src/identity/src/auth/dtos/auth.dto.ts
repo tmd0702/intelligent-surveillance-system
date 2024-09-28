@@ -1,6 +1,6 @@
 export interface AuthDto {
-    userId: string;
-    encryptedPassword?: string;
-    refreshToken?: string;
-    verifyToken?: string;
+    user_id: string;
+    encrypted_password?: string;
+    refresh_token?: string;
+    verify_token?: string;
 }

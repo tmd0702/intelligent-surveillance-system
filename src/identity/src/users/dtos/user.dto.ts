@@ -1,10 +1,10 @@
 export interface UserDto {
     id: string;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     email: string;
-    phoneNumber: string;
-    citizenId?: string;
+    phone_number: string;
+    citizen_id?: string;
     token?: string;
     status: string;
 }

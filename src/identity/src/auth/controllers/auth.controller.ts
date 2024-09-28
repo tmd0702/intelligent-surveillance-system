@@ -52,7 +52,7 @@ const signUp = (req: Request, res: Response) => {
     Authentication.signUp(firstName, lastName, email, phoneNumber, dob, password).then( async (userInfo: UserDto) => {
         await new EmailVerificationProducer(kafkaWrapper.producer).produce({
             userId: userInfo.id,
-            fullName: userInfo.firstName + ' ' + userInfo.lastName,
+            fullName: userInfo.first_name + ' ' + userInfo.last_name,
             email: userInfo.email,
             otp: otp
         })
