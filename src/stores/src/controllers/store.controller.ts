@@ -25,7 +25,7 @@ const createStore = (req: Request, res: Response) => {
         await new StoreCreatedProducer(kafkaWrapper.producer).produce({
             id: createdStore.id,
             name: createdStore.name,
-            contactNumber: createdStore.contactNumber,
+            contactNumber: createdStore.contact_number,
             status: createdStore.status
         })
         res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdStore] })
@@ -38,7 +38,7 @@ const updateStoreByID = (req: Request, res: Response) => {
         await new StoreCreatedProducer(kafkaWrapper.producer).produce({
             id: updatedStore.id,
             name: updatedStore.name,
-            contactNumber: updatedStore.contactNumber,
+            contactNumber: updatedStore.contact_number,
             status: updatedStore.status
         })
         res.status(200).json({ "success": true, "message": "Data updated!", "data": [updatedStore] })
