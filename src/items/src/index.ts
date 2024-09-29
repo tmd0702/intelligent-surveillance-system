@@ -1,6 +1,8 @@
 import { app } from './app';
 import {Knex} from "knex";
 import {kafkaWrapper} from "./kafka-wrapper";
+import {StoreCreatedConsumer} from "./events/consumers/store-created-consumer";
+import {StoreUpdatedConsumer} from "./events/consumers/store-updated-consumer";
 const config = require('config');
 export const db: Knex = require('knex')({
     client: 'pg',
@@ -18,7 +20,8 @@ const start = async (): Promise<void> => {
         await kafkaWrapper.connect();
         // process.on('SIGINT', () => kafkaWrapper.disconnect());
         // process.on('SIGTERM', () => kafkaWrapper.disconnect());
-        //new VerificationCompleteConsumer(kafkaWrapper.consumer).consume();
+        new StoreCreatedConsumer(kafkaWrapper.consumer).consume();
+        new StoreUpdatedConsumer(kafkaWrapper.consumer).consume();
     } catch (err) {
         console.error(err);
     }
