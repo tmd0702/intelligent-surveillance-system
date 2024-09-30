@@ -24,3 +24,35 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: ductruong1/store-srv
+      context: store
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: ductruong1/item-srv
+      context: item
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: ductruong1/order-srv
+      context: item
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: ductruong1/payment-srv
+      context: item
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
