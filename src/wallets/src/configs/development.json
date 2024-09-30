@@ -1,0 +1,43 @@
+{
+  "PROTOCOL": "http",
+  "SERVER_HOST": "localhost",
+  "SERVER_PORT": "3855",
+  "JWT": {
+    "ACCESS_TOKEN": {
+      "PRIVATE_KEY": "MIICXAIBAAKBgQDTUS/xu8ffcdxkQ0QGqxafBat1I+yG/7KC1i/hbbp7l8zv44IBo2tYO67Xq21A1hedVWq+6grIq1TLq52wotMM47tNJoc3KYwb8SAr6Cc46G73kzi49l39+elZwTAsNJpqUBA4njIxdSQ7nt0KA7lDhp1bVuQdtppQMsNOrTUkHQIDAQABAoGAeimiPO5g4wUQ8wmMBwrbXf1KHMMy1ux1R3wJXBoyR4b/W+M7YjUWNoDyWA3rcCMUrckWl933dADQWZoR5G6M8QYzgZqW+KKZSJR8239pWKP7htPTueRvCUiH+R4n9wFwfrjDPNvK57sYAonENG/ITl88z0eIbw6Od55JY9014UUCQQD30vA/47D7xSjJyI/0KIHzTTClig0IQVsd2egI6ioinylSPIHqnUrA2yd1+dDqYlIhQ5uexGijowWhFU/SJrZfAkEA2knrvDHPZl31mC/UymZ8wgIB2nELIl7XsDFMgHJ1+5QuuBGVLh0OgKoLEroBHiwtYVsjKKKxer4BOx+O7gSfAwJASboGYWtylqRECyvQr7lxV5mKNGVKlT8kRVAzeJt5Z41kNKPtnoem2pMYPT/RyDjx6BV98ZDK9IumPBLkCUgdDwJBAL0gutxtk7KvyfA30PgkYAd/0bc/plP7NIl1zUCk61A0DV5x7Xzss/oKWlm5SuqngBIP8qBshbVBFrPxHddfrZ0CQEFF6ESsRnsfGxQ82wKyAhp/nAPg9Zl/cQO6BMjlugooXSXKTCVb8kSqmXnyThLXLSFIOgsgzVy4ndwjyYjD9DU=",
+      "EXPIRES_IN": "7m",
+      "VERIFY_EMAIL_EXPIRES_IN": "1m",
+      "VERIFY_OTP_EXPIRES_IN": "1m"
+    },
+    "REFRESH_TOKEN": {
+      "PRIVATE_KEY": "MIICXAIBAAKBgQCv2eGHd+/aOwkopZg0o2Q7mY0CpRmgmOPvViNbOnL4ypan1KRzgCkjP3TjWh09bSO+KGM/M6ePXDWQIlO7P3hMDUkIeoxleR4ft44oaIaDXOZx/z5z1/zYYSV+K4DyEFafA47qf/jyBbxIs8Jl5Gg7WNUbyuz7I7y+K81txatr5QIDAQABAoGACgAbCkgw1LlMwQoByOSN27HUyhS3i2GGfOLqKdL+HNXwkWTPYV4leMKwFAnY5dhiEvtbAYofelClHyhEmL54Scq4IHTZ4OM+NaNj7We++V8OYucNQIg8wjOHzZTkScwTuj3oM45Ht/fy9VKYIdzyoIij3ryYYj8fEsiXBP/MrtUCQQDky99yPPWlwgqzUAGlzTE4NIhaIzYadK9XBjzIzlxRQBgjEbCNu/xAMqnhBGudyZmYDpvGJsOX6OVitMX0yl6DAkEAxMJ0UOP1RykxRlm1ldg47sqkpvNLGdQZW9xG5ssgvuoh7kPXEjpVM7fUJ+JIOy8Mroubzii58y5QvOIlQKf/dwJBANvbDNy5t1ORIrcsKmkoxCM+V8hGDbdeaR823zIXGp74+Di6xu1rtvn5tUSE+uSk1PNJFmdS2KEhK0uuaorP7AECQCIKKilcZrC69aVgG8QitibJtBaV/KYpRYHY6ANBnRaqVthrsCedI+RgpzmHMkva5ezEhl3yOclSd/FVhnBbIB0CQBM15qqHj91tx4C5xqm3TskheNVfjbAEnxU74lJiNA6CKOQ7SgxgGtNkLzgjxcaAQ9Q7fsQZb1wmoXaSw1Xugpg=",
+      "EXPIRES_IN": "1d"
+    }
+  },
+  "DATABASE": {
+    "POSTGRESQL": {
+      "HOST": "103.42.57.83",
+      "PORT": 5432,
+      "USER": "postgres",
+      "PASSWORD": "sa123456",
+      "DATABASE": "kltn/wallets"
+    }
+  },
+  "PRIVATE_INFORM": {
+    "EMAIL": {
+      "GOOGLE": {
+        "ADDRESS": "21522527@gm.uit.edu.vn",
+        "PASSWORD": "cwdpmarndvfdyfum"
+      },
+      "HOSTINGER": {
+        "ADDRESS": "support@softzone.ai",
+        "PASSWORD": "v,x}%xI;pm%g WD"
+      }
+    },
+    "PHONE": "+15619359981",
+    "TWILIO": {
+      "ACCOUNT_SID": "AC35919a032b5b6c0b256aa1dd98a5d830",
+      "AUTH_TOKEN": "0c850bdc8893099869fb49740cf2e5e8"
+    }
+  }
+}
