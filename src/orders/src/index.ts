@@ -3,6 +3,8 @@ import {Knex} from "knex";
 import {kafkaWrapper} from "./kafka-wrapper";
 import {ItemCreatedConsumer} from "./events/consumers/item-created-consumer";
 import {ItemUpdatedConsumer} from "./events/consumers/item-updated-consumer";
+import {StoreCreatedConsumer} from "./events/consumers/store-created-consumer";
+import {StoreUpdatedConsumer} from "./events/consumers/store-updated-consumer";
 import {PaymentCreatedConsumer} from "./events/consumers/payment-created-consumer";
 const config = require('config');
 export const db: Knex = require('knex')({
@@ -21,6 +23,8 @@ const start = async (): Promise<void> => {
         await kafkaWrapper.connect();
         // process.on('SIGINT', () => kafkaWrapper.disconnect());
         // process.on('SIGTERM', () => kafkaWrapper.disconnect());
+        new StoreCreatedConsumer(kafkaWrapper.consumer).consume();
+        new StoreUpdatedConsumer(kafkaWrapper.consumer).consume();
         new ItemCreatedConsumer(kafkaWrapper.consumer).consume();
         new ItemUpdatedConsumer(kafkaWrapper.consumer).consume();
         new PaymentCreatedConsumer(kafkaWrapper.consumer).consume();

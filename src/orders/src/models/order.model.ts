@@ -36,6 +36,14 @@ export const Order = {
             throw err;
         }
     },
+    findItemsByID: async (id: string) => {
+        try {
+            const items = await db('order_items').where({ order_id: id });
+            return items;
+        } catch (err) {
+            throw err;
+        }
+    },
     updateByID: async (id: string, newDetails: OrderDto) => {
         try {
             const [updatedOrder] = await db('orders').where({ id }).update(newDetails).returning('*');

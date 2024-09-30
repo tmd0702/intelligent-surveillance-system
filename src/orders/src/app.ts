@@ -1,4 +1,4 @@
-import {storeRouter} from "./routes/item.route";
+import {storeRouter} from "./routes/order.route";
 const { errorHandler, NotFoundError } = require('@softzone/common');
 import { Request, Response,  } from 'express';
 
