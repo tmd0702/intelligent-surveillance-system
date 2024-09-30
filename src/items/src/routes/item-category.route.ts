@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {updatecategoryByID, getcategoryById, getcategorys, deletecategoryByID, createcategory} = require('../controllers/category-category.controller.controller')
+const {updateCategoryByID, getCategories, getCategoryById, deleteCategoryByID, createCategory} = require('../controllers/item-category.controller')
 const {verifyToken} = require('@softzone/common');
-router.route('/api/categorys/get').get(verifyToken, getcategorys);
-router.route('/api/categorys/get/id').get(verifyToken, getcategoryById);
-router.route('/api/categorys/update/id').post(verifyToken, updatecategoryByID);
-router.route('/api/categorys/create').post(verifyToken, createcategory);
-router.route('/api/categorys/delete/id').post(verifyToken, deletecategoryByID);
+router.route('/api/item/categories/get').get(verifyToken, getCategories);
+router.route('/api/item/categories/get/id').get(verifyToken, getCategoryById);
+router.route('/api/item/categories/update/id').post(verifyToken, updateCategoryByID);
+router.route('/api/item/categories/create').post(verifyToken, createCategory);
+router.route('/api/item/categories/delete/id').post(verifyToken, deleteCategoryByID);
 
 export { router as categoryRouter };
