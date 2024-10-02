@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-const Store = require("../models/store.model");
+const {Store} = require("../models/store.model");
 import {StoreDto} from "../dtos/store.dto";
 import {StoreCreatedProducer} from "../events/producers/store-created-producer";
 import {kafkaWrapper} from "../kafka-wrapper";
 
 const getStoreById = (req: Request, res: Response) => {
-    Store.findByID(req.query.id).then((rows: StoreDto[]) =>
-        res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": rows})
+    Store.findByID(req.query.id).then((store: StoreDto) =>
+        res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": [store]})
     ).catch((error: Error) => {
         res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
     });
