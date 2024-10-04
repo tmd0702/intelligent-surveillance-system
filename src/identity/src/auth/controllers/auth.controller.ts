@@ -2,6 +2,8 @@ import {Request, Response } from 'express';
 import {UserDto} from "../../users/dtos/user.dto";
 import {kafkaWrapper} from "../../kafka-wrapper";
 import {EmailVerificationProducer} from "../../events/producers/email-verification-producer";
+import {UserCreatedProducer} from "../../events/producers/user-created-producer";
+import {UserStatus} from "@softzone/common";
 const otpGenerator = require('otp-generator')
 const {isPasswordValid} = require('@softzone/common');
 const Authentication = require('../models/auth.model');
@@ -50,12 +52,20 @@ const signUp = (req: Request, res: Response) => {
     const password = req.body.password
     const otp = otpGenerator.generate(6, { digits: true, upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
     Authentication.signUp(firstName, lastName, email, phoneNumber, dob, password).then( async (userInfo: UserDto) => {
+        await new UserCreatedProducer(kafkaWrapper.producer).produce({
+            id: userInfo.id,
+            first_name: userInfo.first_name,
+            last_name: userInfo.last_name,
+            phone_number: userInfo.phone_number,
+            email: userInfo.email,
+        });
         await new EmailVerificationProducer(kafkaWrapper.producer).produce({
             userId: userInfo.id,
             fullName: userInfo.first_name + ' ' + userInfo.last_name,
             email: userInfo.email,
             otp: otp
-        })
+        });
+
         res.status(200).json({"success": true, "message": "User created.", "data": userInfo});
     }).catch((error: Error) => {
         res.status(200).json({"success": false, "message": error.message, "data": {}});
