@@ -6,7 +6,6 @@ const express = require( 'express');
 const session = require('express-session');
 const cors = require('cors');
 const app = express();
-const config = require('config');
 const bodyParser = require('body-parser')
 
 app.use(bodyParser.urlencoded({ extended: false }))
