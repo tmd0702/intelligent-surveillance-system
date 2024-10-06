@@ -6,7 +6,7 @@ export class VerificationCompleteConsumer extends Consumer<EmailVerificationComp
 
     async onMessage(data: EmailVerificationCompleteEvent['data']) {
         const newEvent = {
-            eventType: this.topic,
+            eventType: Topics.EmailVerificationCompleted,
             payload: data,
         };
         await EventModel.create(newEvent);

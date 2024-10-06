@@ -6,7 +6,7 @@ const start = async () => {
         await kafkaWrapper.connect();
         // process.on('SIGINT', () => kafkaWrapper.disconnect());
         // process.on('SIGTERM', () => kafkaWrapper.disconnect());
-        new AccountVerificationConsumer(kafkaWrapper.consumer).consume();
+        new AccountVerificationConsumer().consume();
     } catch(err) {
         console.error(err);
     }

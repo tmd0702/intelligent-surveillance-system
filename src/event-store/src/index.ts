@@ -1,5 +1,5 @@
 import { app } from './app';
-import {kafkaWrapper} from "./kafka-wrapper";
+// import {kafkaWrapper} from "./kafka-wrapper";
 
 import {AccountVerificationConsumer} from "./events/consumers/account-verification-consumer";
 import {ItemCreatedConsumer} from "./events/consumers/item-created-consumer";
@@ -11,6 +11,15 @@ import {StoreUpdatedConsumer} from "./events/consumers/store-updated-consumer";
 import {UserCreatedConsumer} from "./events/consumers/user-created-consumer";
 import {UserUpdatedConsumer} from "./events/consumers/user-updated-consumer";
 import {VerificationCompleteConsumer} from "./events/consumers/verification-complete-consumer";
+import {CameraUpdatedConsumer} from "./events/consumers/camera-updated-consumer";
+import {CameraCreatedConsumer} from "./events/consumers/camera-created-consumer";
+import {DepartmentCreatedConsumer} from "./events/consumers/department-created-consumer";
+import {DepartmentUpdatedConsumer} from "./events/consumers/department-updated-consumer";
+import {EmployeeCreatedConsumer} from "./events/consumers/employee-created-consumer";
+import {EmployeeUpdatedConsumer} from "./events/consumers/employee-updated-consumer";
+import {LocationCreatedConsumer} from "./events/consumers/location-created-consumer";
+import {LocationUpdatedConsumer} from "./events/consumers/location-updated-consumer";
+
 import mongoose from "mongoose";
 const config = require('config');
 
@@ -25,19 +34,27 @@ mongoose
 
 const start = async (): Promise<void> => {
     try {
-        await kafkaWrapper.connect();
         // process.on('SIGINT', () => kafkaWrapper.disconnect());
         // process.on('SIGTERM', () => kafkaWrapper.disconnect());
-        new AccountVerificationConsumer(kafkaWrapper.consumer).consume();
-        new ItemCreatedConsumer(kafkaWrapper.consumer).consume();
-        new ItemUpdatedConsumer(kafkaWrapper.consumer).consume();
-        new OrderCreatedConsumer(kafkaWrapper.consumer).consume();
-        new PaymentCreatedConsumer(kafkaWrapper.consumer).consume();
-        new StoreUpdatedConsumer(kafkaWrapper.consumer).consume();
-        new StoreCreatedConsumer(kafkaWrapper.consumer).consume();
-        new UserCreatedConsumer(kafkaWrapper.consumer).consume();
-        new UserUpdatedConsumer(kafkaWrapper.consumer).consume();
-        new VerificationCompleteConsumer(kafkaWrapper.consumer).consume();
+        new AccountVerificationConsumer().consume();
+        new ItemCreatedConsumer().consume();
+        new ItemUpdatedConsumer().consume();
+        new OrderCreatedConsumer().consume();
+        new PaymentCreatedConsumer().consume();
+        new StoreUpdatedConsumer().consume();
+        new StoreCreatedConsumer().consume();
+        new UserCreatedConsumer().consume();
+        new UserUpdatedConsumer().consume();
+        new VerificationCompleteConsumer().consume();
+
+        new CameraUpdatedConsumer().consume();
+        new CameraCreatedConsumer().consume();
+        new DepartmentCreatedConsumer().consume();
+        new DepartmentUpdatedConsumer().consume();
+        new EmployeeCreatedConsumer().consume();
+        new EmployeeUpdatedConsumer().consume();
+        new LocationCreatedConsumer().consume();
+        new LocationUpdatedConsumer().consume();
     } catch (err) {
         console.error(err);
     }

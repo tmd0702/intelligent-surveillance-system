@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-const {Category} = require("../models/Category-category.model.model");
+const {Category} = require("../models/store-category.model");
 import {StoreCategoryDto} from "../dtos/store-category.dto";
 
 const getCategoryById = (req: Request, res: Response) => {

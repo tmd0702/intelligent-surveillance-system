@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@softzone/common": "^1.0.18",
+    "@softzone/common": "^1.0.41",
     "@types/knex": "^0.16.1",
     "config": "^3.3.12",
     "cors": "^2.8.5",

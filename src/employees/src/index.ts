@@ -20,8 +20,8 @@ const start = async (): Promise<void> => {
         await kafkaWrapper.connect();
         // process.on('SIGINT', () => kafkaWrapper.disconnect());
         // process.on('SIGTERM', () => kafkaWrapper.disconnect());
-        new DepartmentCreatedConsumer(kafkaWrapper.consumer).consume();
-        new DepartmentUpdatedConsumer(kafkaWrapper.consumer).consume();
+        new DepartmentCreatedConsumer().consume();
+        new DepartmentUpdatedConsumer().consume();
     } catch (err) {
         console.error(err);
     }

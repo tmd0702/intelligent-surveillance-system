@@ -10,6 +10,13 @@ import {CameraStreamingB3Consumer} from "./events/consumers/camera-streaming-b3-
 import {CameraStreamingB2Consumer} from "./events/consumers/camera-streaming-b2-consumer";
 import {CameraStreamingB1Consumer} from "./events/consumers/camera-streaming-b1-consumer";
 import {CameraStreamingGConsumer} from "./events/consumers/camera-streaming-g-consumer";
+import {CameraCreatedConsumer} from "./events/consumers/camera-created-consumer";
+import {CameraUpdatedConsumer} from "./events/consumers/camera-updated-consumer";
+import {LocationCreatedConsumer} from "./events/consumers/location-created-consumer";
+import {LocationUpdatedConsumer} from "./events/consumers/location-updated-consumer";
+import {UserCreatedConsumer} from "./events/consumers/user-created-consumer";
+import {UserUpdatedConsumer} from "./events/consumers/user-updated-consumer";
+
 const config = require('config');
 export const db: Knex = require('knex')({
     client: 'pg',
@@ -27,15 +34,21 @@ const start = async (): Promise<void> => {
         await kafkaWrapper.connect();
         // process.on('SIGINT', () => kafkaWrapper.disconnect());
         // process.on('SIGTERM', () => kafkaWrapper.disconnect());
-        new CameraStreaming04Consumer(kafkaWrapper.consumer).consume();
-        new CameraStreaming03Consumer(kafkaWrapper.consumer).consume();
-        new CameraStreaming02Consumer(kafkaWrapper.consumer).consume();
-        new CameraStreaming01Consumer(kafkaWrapper.consumer).consume();
-        new CameraStreamingGConsumer(kafkaWrapper.consumer).consume();
-        new CameraStreamingB1Consumer(kafkaWrapper.consumer).consume();
-        new CameraStreamingB2Consumer(kafkaWrapper.consumer).consume();
-        new CameraStreamingB3Consumer(kafkaWrapper.consumer).consume();
-        new CameraStreamingB4Consumer(kafkaWrapper.consumer).consume();
+        new CameraStreaming04Consumer().consume();
+        new CameraStreaming03Consumer().consume();
+        new CameraStreaming02Consumer().consume();
+        new CameraStreaming01Consumer().consume();
+        new CameraStreamingGConsumer().consume();
+        new CameraStreamingB1Consumer().consume();
+        new CameraStreamingB2Consumer().consume();
+        new CameraStreamingB3Consumer().consume();
+        new CameraStreamingB4Consumer().consume();
+        new CameraUpdatedConsumer().consume();
+        new CameraCreatedConsumer().consume();
+        new LocationUpdatedConsumer().consume();
+        new LocationCreatedConsumer().consume();
+        new UserCreatedConsumer().consume();
+        new UserUpdatedConsumer().consume();
     } catch (err) {
         console.error(err);
     }

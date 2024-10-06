@@ -19,7 +19,7 @@ const start = async (): Promise<void> => {
         await kafkaWrapper.connect();
         // process.on('SIGINT', () => kafkaWrapper.disconnect());
         // process.on('SIGTERM', () => kafkaWrapper.disconnect());
-        new VerificationCompleteConsumer(kafkaWrapper.consumer).consume();
+        new VerificationCompleteConsumer().consume();
     } catch (err) {
         console.error(err);
     }

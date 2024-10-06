@@ -23,11 +23,11 @@ const start = async (): Promise<void> => {
         await kafkaWrapper.connect();
         // process.on('SIGINT', () => kafkaWrapper.disconnect());
         // process.on('SIGTERM', () => kafkaWrapper.disconnect());
-        new StoreCreatedConsumer(kafkaWrapper.consumer).consume();
-        new StoreUpdatedConsumer(kafkaWrapper.consumer).consume();
-        new ItemCreatedConsumer(kafkaWrapper.consumer).consume();
-        new ItemUpdatedConsumer(kafkaWrapper.consumer).consume();
-        new PaymentCreatedConsumer(kafkaWrapper.consumer).consume();
+        new StoreCreatedConsumer().consume();
+        new StoreUpdatedConsumer().consume();
+        new ItemCreatedConsumer().consume();
+        new ItemUpdatedConsumer().consume();
+        new PaymentCreatedConsumer().consume();
     } catch (err) {
         console.error(err);
     }
