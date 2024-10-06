@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
-const {Camera} = require("../models/caemra.model");
+const {Camera} = require("../models/camera.model");
 import {CameraDto} from "../dtos/camera.dto";
 import {CameraCreatedProducer} from "../events/producers/camera-created-producer";
 import {CameraUpdatedProducer} from "../events/producers/camera-updated-producer";
-import {LocationUpdatedProducer} from "../events/producers/location-updated-producer";
 import {kafkaWrapper} from "../kafka-wrapper";
 
 const getCameraById = (req: Request, res: Response) => {
