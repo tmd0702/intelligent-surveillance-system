@@ -12,7 +12,7 @@ export class VerificationCompleteConsumer extends Consumer<EmailVerificationComp
             const isValidOTP = await Authentication.verifyOTP(data.userId, data.otp);
             if (isValidOTP) {
                 const updatedUser = await User.updateByUserID(data.userId, {
-                    status: UserStatus.ACTIVE
+                    status: UserStatus.WAITING_FOR_FACE_REGISTRATION
                 });
                 new UserUpdatedProducer(kafkaWrapper.producer).produce({
                     id: updatedUser.id,

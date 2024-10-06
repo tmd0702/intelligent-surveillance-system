@@ -4,8 +4,8 @@ import {db} from '../../index';
 export const User = {
     get: async () => {
         try {
-            const user = await db.select("*").from('users');
-            return user;
+            const users = await db.select("*").from('users');
+            return users;
         } catch (err) {
             throw err;
         }
