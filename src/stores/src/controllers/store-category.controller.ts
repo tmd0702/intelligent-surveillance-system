@@ -19,8 +19,8 @@ const getCategories = (req: Request, res: Response) => {
 }
 
 const createCategory = (req: Request, res: Response) => {
-    Category.create(req.body.id, req.body.details).then(async (createdCategory: StoreCategoryDto) => {
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdCategory] })
+    Category.create(req.body.details).then(async (createdCategory: StoreCategoryDto) => {
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdCategory] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

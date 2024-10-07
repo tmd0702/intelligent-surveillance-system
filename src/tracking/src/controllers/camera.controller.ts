@@ -19,8 +19,8 @@ const getCameras = (req: Request, res: Response) => {
 }
 
 const createCamera = (req: Request, res: Response) => {
-    Camera.create(req.body.id, req.body.details).then(async (createdCamera: CameraDto) => {
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdCamera] })
+    Camera.create(req.body.details).then(async (createdCamera: CameraDto) => {
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdCamera] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

@@ -22,7 +22,7 @@ const getLocations = (req: Request, res: Response) => {
 }
 
 const createLocation = (req: Request, res: Response) => {
-    Location.create(req.body.id, req.body.details).then(async (createdLocation: LocationDto) => {
+    Location.create(req.body.details).then(async (createdLocation: LocationDto) => {
         await new LocationCreatedProducer(kafkaWrapper.producer).produce({
             id: createdLocation.id,
             name: createdLocation.name,
@@ -30,7 +30,7 @@ const createLocation = (req: Request, res: Response) => {
             floor_number: createdLocation.floor_number,
             zone_name: createdLocation.zone_name
         })
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdLocation] })
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdLocation] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

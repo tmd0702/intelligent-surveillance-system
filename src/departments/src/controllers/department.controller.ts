@@ -21,13 +21,13 @@ const getDepartments = (req: Request, res: Response) => {
 }
 
 const createDepartment = (req: Request, res: Response) => {
-    Department.create(req.body.id, req.body.details).then(async (createdDepartment: DepartmentDto) => {
+    Department.create(req.body.details).then(async (createdDepartment: DepartmentDto) => {
         await new DepartmentCreatedProducer(kafkaWrapper.producer).produce({
             id: createdDepartment.id,
             name: createdDepartment.name,
             status: createdDepartment.status
         })
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdDepartment] })
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdDepartment] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

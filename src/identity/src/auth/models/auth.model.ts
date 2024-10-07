@@ -9,13 +9,13 @@ const Authentication = {
             const payload = {_id: user.id};
             const accessToken = jwt.sign(
                 payload,
-                config.get("AUTH.JWT.ACCESS_TOKEN.PRIVATE_KEY"),
-                {expiresIn: config.get("AUTH.JWT.ACCESS_TOKEN.EXPIRES_IN")}
+                config.get("JWT.ACCESS_TOKEN.PRIVATE_KEY"),
+                {expiresIn: config.get("JWT.ACCESS_TOKEN.EXPIRES_IN")}
             );
             const refreshToken = jwt.sign(
                 payload,
-                config.get("AUTH.JWT.REFRESH_TOKEN.PRIVATE_KEY"),
-                { expiresIn: config.get("AUTH.JWT.REFRESH_TOKEN.EXPIRES_IN")}
+                config.get("JWT.REFRESH_TOKEN.PRIVATE_KEY"),
+                { expiresIn: config.get("JWT.REFRESH_TOKEN.EXPIRES_IN")}
             );
             return Promise.resolve({accessToken, refreshToken});
         } catch(err) {
@@ -23,7 +23,7 @@ const Authentication = {
         }
     },
     verifyRefreshToken: async (refreshToken: string) => {
-        const privateKey = config.get("AUTH.JWT.REFRESH_TOKEN.PRIVATE_KEY");
+        const privateKey = config.get("JWT.REFRESH_TOKEN.PRIVATE_KEY");
         return new Promise((resolve, reject) => {
             jwt.verify(refreshToken, privateKey, (err: Error, tokenDetails: any) => {
                 if (err) {

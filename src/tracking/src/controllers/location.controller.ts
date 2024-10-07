@@ -19,8 +19,8 @@ const getLocations = (req: Request, res: Response) => {
 }
 
 const createLocation = (req: Request, res: Response) => {
-    Location.create(req.body.id, req.body.details).then(async (createdLocation: LocationDto) => {
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdLocation] })
+    Location.create(req.body.details).then(async (createdLocation: LocationDto) => {
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdLocation] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

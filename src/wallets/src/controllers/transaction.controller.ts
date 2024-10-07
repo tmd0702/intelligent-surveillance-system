@@ -23,7 +23,7 @@ const getTransactions = (req: Request, res: Response) => {
 
 const createTransaction = (req: Request, res: Response) => {
     Transaction.create(req.body.details).then(async (newTransaction: TransactionDto) => {
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [newTransaction] })
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [newTransaction] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

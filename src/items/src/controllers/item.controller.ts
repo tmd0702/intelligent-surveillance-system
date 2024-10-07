@@ -22,14 +22,14 @@ const getItems = (req: Request, res: Response) => {
 }
 
 const createItem = (req: Request, res: Response) => {
-    Item.create(req.body.id, req.body.details).then(async (createdItem: ItemDto) => {
+    Item.create(req.body.details).then(async (createdItem: ItemDto) => {
         await new ItemCreatedProducer(kafkaWrapper.producer).produce({
             id: createdItem.id,
             name: createdItem.name,
             price: createdItem.price,
             stock: createdItem.stock,
         })
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdItem] })
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdItem] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

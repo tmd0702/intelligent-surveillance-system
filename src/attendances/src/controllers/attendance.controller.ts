@@ -25,8 +25,8 @@ const getAttendances = (req: Request, res: Response) => {
 }
 
 const createAttendance = (req: Request, res: Response) => {
-    Attendance.create(req.body.id, req.body.details).then(async (createdAttendance: AttendanceDto) => {
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdAttendance] })
+    Attendance.create(req.body.details).then(async (createdAttendance: AttendanceDto) => {
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdAttendance] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

@@ -21,14 +21,14 @@ const getStores = (req: Request, res: Response) => {
 }
 
 const createStore = (req: Request, res: Response) => {
-    Store.create(req.body.id, req.body.details).then(async (createdStore: StoreDto) => {
+    Store.create(req.body.details).then(async (createdStore: StoreDto) => {
         await new StoreCreatedProducer(kafkaWrapper.producer).produce({
             id: createdStore.id,
             name: createdStore.name,
             contactNumber: createdStore.contact_number,
             status: createdStore.status
         })
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdStore] })
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdStore] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

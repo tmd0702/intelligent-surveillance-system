@@ -22,9 +22,9 @@ const getEmployees = (req: Request, res: Response) => {
 }
 
 const createEmployee = (req: Request, res: Response) => {
-    Employee.create(req.body.id, req.body.details).then(async (createdEmployee: EmployeeDto) => {
+    Employee.create(req.body.details).then(async (createdEmployee: EmployeeDto) => {
         await new EmployeeCreatedProducer(kafkaWrapper.producer).produce(createdEmployee);
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdEmployee] })
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdEmployee] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

@@ -22,14 +22,14 @@ const getCameras = (req: Request, res: Response) => {
 }
 
 const createCamera = (req: Request, res: Response) => {
-    Camera.create(req.body.id, req.body.details).then(async (createdCamera: CameraDto) => {
+    Camera.create(req.body.details).then(async (createdCamera: CameraDto) => {
         await new CameraCreatedProducer(kafkaWrapper.producer).produce({
             id: createdCamera.id,
             name: createdCamera.name,
             location_id: createdCamera.location_id,
             ip_address: createdCamera.ip_address
         })
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdCamera] })
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdCamera] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

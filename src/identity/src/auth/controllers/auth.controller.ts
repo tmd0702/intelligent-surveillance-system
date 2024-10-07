@@ -40,7 +40,7 @@ const signIn = (req: Request, res: Response) => {
         }
 
     }).catch((error: Error) => {
-        res.status(200).json({"success": false, "message": "Invalid identifier or password", "data": []});
+        res.status(200).json({"success": false, "message": error.message, "data": []});
     });
 }
 const signUp = (req: Request, res: Response) => {

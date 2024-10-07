@@ -19,8 +19,8 @@ const getTickets = (req: Request, res: Response) => {
 }
 
 const createTicket = (req: Request, res: Response) => {
-    Ticket.create(req.body.id, req.body.details).then(async (createdTicket: TicketDto) => {
-        res.status(200).json({ "success": true, "message": "Data updated!", "data": [createdTicket] })
+    Ticket.create(req.body.details).then(async (createdTicket: TicketDto) => {
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdTicket] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })
