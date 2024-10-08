@@ -4,5 +4,5 @@ export interface FaceRecognitionLogDto {
     face_id: string;
     frame_id: string;
     confidence_score: number;
-    recogized_at?: string;
+    recognized_at?: string;
 }

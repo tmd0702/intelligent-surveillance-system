@@ -12,18 +12,18 @@ export const processFrame = async (data: CameraStreamingEvent['data']) => {
         captured_at: data.timestamp,
         camera_id: data.camera_id,
         frame_url: 'test',
-        is_archieved: false,
+        is_archived: false,
         size_mb: 1,
         byte_data: data.frame_bytes,
         encoding_format: data.encoding_format,
         resolution: data.resolution
     });
-    await FaceRecognitionLog.create({
-        camera_id: frame.camera_id,
-        face_id: faceRecogMetadata.face_id,
-        frame_id: frame.id,
-        confidence_score: faceRecogMetadata.confidence_score,
-        recogized_at: frame.captured_at
-    })
+    // await FaceRecognitionLog.create({
+    //     camera_id: frame.camera_id,
+    //     face_id: faceRecogMetadata.face_id,
+    //     frame_id: frame.id,
+    //     confidence_score: faceRecogMetadata.confidence_score,
+    //     recognized_at: frame.captured_at
+    // })
 
 }
