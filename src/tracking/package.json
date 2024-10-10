@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@softzone/common": "^1.0.42",
+    "@grpc/grpc-js": "^1.12.1",
+    "@grpc/proto-loader": "^0.7.13",
+    "@softzone/common": "^1.0.44",
     "@types/knex": "^0.16.1",
     "body-parser": "^1.20.3",
     "config": "^3.3.12",
@@ -19,10 +21,13 @@
     "eslint-config-prettier": "^9.1.0",
     "express": "^4.21.0",
     "express-session": "^1.18.0",
+    "grpc_tools_node_protoc_ts": "^5.3.3",
+    "grpc-tools": "^1.12.4",
     "otp-generator": "^4.0.1",
     "pg": "^8.12.0",
     "prettier": "^3.3.3",
-    "ts-node-dev": "^2.0.0"
+    "ts-node-dev": "^2.0.0",
+    "ts-proto": "^2.2.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.10.0",
