@@ -18,9 +18,9 @@ export const Store = {
             throw err;
         }
     },
-    create: async (StoreDetails: StoreDto) => {
+    create: async (details: StoreDto) => {
         try {
-            const [newStore] = await db('stores').insert(StoreDetails).returning('*');
+            const [newStore] = await db('stores').insert(details).returning('*');
             return newStore;
         } catch (err) {
             throw err;

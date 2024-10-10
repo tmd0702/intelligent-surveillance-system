@@ -4,7 +4,7 @@ import {db} from '../index';
 export const Category = {
     get: async () => {
         try {
-            const categories = await db.select("*").from('store-categories');
+            const categories = await db.select("*").from('store_categories');
             return categories;
         } catch (err) {
             throw err;
@@ -12,7 +12,7 @@ export const Category = {
     },
     findByID: async (id: string) => {
         try {
-            const category = await db('store-categories').where({ id }).first();
+            const category = await db('store_categories').where({ id }).first();
             return category;
         } catch (err) {
             throw err;
@@ -20,7 +20,7 @@ export const Category = {
     },
     create: async (categoryDetails: StoreCategoryDto) => {
         try {
-            const [newCategory] = await db('store-categories').insert(categoryDetails).returning('*');
+            const [newCategory] = await db('store_categories').insert(categoryDetails).returning('*');
             return newCategory;
         } catch (err) {
             throw err;
@@ -28,7 +28,7 @@ export const Category = {
     },
     updateByID: async (id: string, newDetails: StoreCategoryDto) => {
         try {
-            const [updatedCategory] = await db('store-categories').where({ id }).update(newDetails).returning('*');
+            const [updatedCategory] = await db('store_categories').where({ id }).update(newDetails).returning('*');
             return updatedCategory;
         } catch (err) {
             throw err;
@@ -36,7 +36,7 @@ export const Category = {
     },
     deleteByID: async (id: string) => {
         try {
-            const [deletedCategory] = await db('store-categories').where({ id }).del().returning('*');
+            const [deletedCategory] = await db('store_categories').where({ id }).del().returning('*');
             return deletedCategory;
         } catch (err) {
             throw err;

@@ -1,9 +1,14 @@
-import {Consumer, StoreUpdatedEvent, Topics} from '@softzone/common';
-import {Store} from "../../models/store.model";
+import {Consumer, StoreCreatedEvent, StoreUpdatedEvent, Topics} from '@softzone/common';
+const {Store} = require("../../models/store.model");
+
 export class StoreUpdatedConsumer extends Consumer<StoreUpdatedEvent> {
     topic: Topics.StoreUpdated = Topics.StoreUpdated;
 
-    async onMessage(data: StoreUpdatedEvent['data']) {
-        Store.updateByID(data.id, data);
+    async onMessage(data: StoreCreatedEvent['data']) {
+        Store.updateByID(data.id, {
+            name: data.name,
+            contact_number: data.contactNumber,
+            status: data.status
+        });
     }
 }
