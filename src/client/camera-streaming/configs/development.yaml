@@ -1,0 +1,7 @@
+postgres: {
+  host: "103.42.57.83",
+  port: 5432,
+  user: "postgres",
+  password: "sa123456",
+  database: "kltn/cameras"
+}
