@@ -1,0 +1,7 @@
+gRPC:
+  port: 3871
+
+models:
+  recognizer: ../inference/trocr-small
+  detector: runs/detect/train7/weights/best.pt
+  text_detector: models/detection/en_PP-OCRv3_det_infer
