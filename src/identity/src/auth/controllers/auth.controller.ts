@@ -7,7 +7,7 @@ import {UserStatus} from "@softzone/common";
 const otpGenerator = require('otp-generator')
 const {isPasswordValid} = require('@softzone/common');
 const Authentication = require('../models/auth.model');
-const User = require('../../users/models/user.model');
+const {User} = require('../../users/models/user.model');
 const config = require("config");
 const jwt = require('jsonwebtoken');
 const speakeasy = require('speakeasy')
@@ -24,7 +24,24 @@ const generateAccessToken = async (req: Request, res: Response) => {
         res.status(200).json({"success": false, "message": "DB: Update refresh token failed.", "data": []})
     }
 }
+const verifyAccount = async (req: Request, res: Response) => {
+    let userId = req.body.user_id;
+    let otp = req.body.otp;
+    try {
+        const isOtpValid = await Authentication.verifyOTP(userId, otp);
+        if (isOtpValid) {
+            await Authentication.updateByUserID(userId, {otp: null});
+            const updatedUser = await User.updateByID(userId, {status: UserStatus.WAITING_FOR_FACE_REGISTRATION})
+            res.status(200).json({"success": true, "message": "Account verified. One more step!", "data": [updatedUser]})
+        } else {
+            res.status(200).json({"success": false, "message": "Invalid OTP. Please try again.", "data": []});
 
+        }
+    } catch (error) {
+        res.status(500).json({"success": false, "message": "There was something wrong.", "data": []})
+    }
+
+}
 const signIn = (req: Request, res: Response) => {
     const identifier = req.body.identifier;
     const password = req.body.password;
@@ -33,7 +50,7 @@ const signIn = (req: Request, res: Response) => {
         userInfo["token"] = accessToken;
         const isTokenUpdated = await Authentication.updateRefreshToken(refreshToken, userInfo["id"]);
         if (isTokenUpdated) {
-            res.status(200).json({"success": true, "message": "Signed in successfully.", "data": userInfo})
+            res.status(200).json({"success": true, "message": "Signed in successfully.", "data": userInfo});
         } else {
             throw new Error("DB: Update refresh token failed");
             res.status(500).json({"success": false, "message": "Something went wrong.", "data": userInfo})
@@ -218,4 +235,5 @@ module.exports = {
     manualVerifyToken,
     generateVerifyUserToken,
     checkPhoneNumber,
+    verifyAccount
 }

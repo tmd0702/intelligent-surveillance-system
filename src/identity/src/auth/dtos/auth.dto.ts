@@ -3,4 +3,5 @@ export interface AuthDto {
     encrypted_password?: string;
     refresh_token?: string;
     verify_token?: string;
+    otp?: string;
 }

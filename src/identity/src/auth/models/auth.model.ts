@@ -40,7 +40,7 @@ const Authentication = {
     },
     verifyOTP: async (userId: string, otp: string) => {
         try {
-            const trueOTP = await Authentication.findByUserID(userId);
+            const trueOTP = (await Authentication.findByUserID(userId)).otp;
             return trueOTP === otp;
         } catch (err) {
             console.error(err);
