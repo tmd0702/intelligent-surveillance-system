@@ -1,0 +1,7 @@
+gRPC:
+  port: 3872
+
+models:
+  detector: output/train/20241014-143720-mobilenetv3_large_100-224/model_best.pth.tar
+  pretrained: mobilenetv3_large_100
+

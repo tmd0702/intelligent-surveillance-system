@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package face_liveness_detect;
+
+service FaceLivenessDetect {
+  // A simple RPC.
+  //
+  // Obtains the MessageResponse at a given position.
+  rpc DetectLiveness(ClientInput) returns (ServerOutput) {}
+}
+
+message ClientInput {
+  string b64_data = 1;
+}
+
+message FaceLivenessData {
+  string category = 1;
+  float confidence_score = 2;
+}
+
+message ServerOutput {
+  FaceLivenessData face_liveness = 1;
+}
