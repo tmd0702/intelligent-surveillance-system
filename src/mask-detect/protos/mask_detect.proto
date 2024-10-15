@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package mask_detect;
+
+service MaskDetect {
+  // A simple RPC.
+  //
+  // Obtains the MessageResponse at a given position.
+  rpc DetectMasks(ClientInput) returns (ServerOutput) {}
+}
+
+message ClientInput {
+  string b64_data = 1;
+}
+
+message MaskDetData {
+  string label = 1;
+  float confidence_score = 2;
+}
+
+message ServerOutput {
+  MaskDetData mask_detect = 1;
+}

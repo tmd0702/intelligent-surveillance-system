@@ -1,0 +1,6 @@
+gRPC:
+  port: 3873
+
+models:
+  detector: runs/detect/train4/weights/best.pt
+
