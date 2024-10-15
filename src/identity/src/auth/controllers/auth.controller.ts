@@ -4,6 +4,7 @@ import {kafkaWrapper} from "../../kafka-wrapper";
 import {EmailVerificationProducer} from "../../events/producers/email-verification-producer";
 import {UserCreatedProducer} from "../../events/producers/user-created-producer";
 import {UserStatus} from "@softzone/common";
+import {SMSVerificationProducer} from "../../events/producers/sms-verification-producer";
 const otpGenerator = require('otp-generator')
 const {isPasswordValid} = require('@softzone/common');
 const Authentication = require('../models/auth.model');
@@ -82,7 +83,12 @@ const signUp = (req: Request, res: Response) => {
             email: userInfo.email,
             otp: otp
         });
-
+        await new SMSVerificationProducer(kafkaWrapper.producer).produce({
+            userId: userInfo.id,
+            fullName: userInfo.first_name + ' ' + userInfo.last_name,
+            phoneNumber: userInfo.phone_number,
+            otp: otp
+        });
         res.status(200).json({"success": true, "message": "User created.", "data": userInfo});
     }).catch((error: Error) => {
         res.status(200).json({"success": false, "message": error.message, "data": {}});
