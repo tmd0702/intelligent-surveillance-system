@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package plate_recog;
+
+service PlateRecog {
+  // A simple RPC.
+  //
+  // Obtains the MessageResponse at a given position.
+  rpc ExtractPlates(ClientInput) returns (ServerOutput) {}
+}
+
+message ClientInput {
+  string b64_data = 1;
+}
+
+message PlateData {
+  string plate_number = 1;
+  float confidence_score = 2;
+}
+
+message ServerOutput {
+  PlateData plate = 1;
+}

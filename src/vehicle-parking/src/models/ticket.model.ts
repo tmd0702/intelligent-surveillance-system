@@ -1,6 +1,7 @@
 
 import {TicketDto} from "../dtos/ticket.dto";
 import {db} from '../index';
+import {ParkingTicketStatus} from "@softzone/common";
 export const Ticket = {
     get: async () => {
         try {
@@ -13,6 +14,22 @@ export const Ticket = {
     findByID: async (id: string) => {
         try {
             const ticket = await db('tickets').where({ id }).first();
+            return ticket;
+        } catch (err) {
+            throw err;
+        }
+    },
+    findCheckIn: async (faceId: string, plateNumber: string) => {
+        try {
+            const ticket = await db('tickets').where({ status: ParkingTicketStatus.ACTIVE, face_id: faceId, plate_number: plateNumber }).orderBy('check_in', 'desc').first();
+            return ticket;
+        } catch (err) {
+            throw err;
+        }
+    },
+    findCheckOut: async (faceId: string, plateNumber: string) => {
+        try {
+            const ticket = await db('tickets').where({ status: ParkingTicketStatus.COMPLETED, face_id: faceId, plate_number: plateNumber }).orderBy('check_out', 'desc').first();
             return ticket;
         } catch (err) {
             throw err;
