@@ -28,6 +28,8 @@ const createItem = (req: Request, res: Response) => {
             name: createdItem.name,
             price: createdItem.price,
             stock: createdItem.stock,
+            sale_price: createdItem.sale_price,
+            image: createdItem.image
         })
         res.status(200).json({ "success": true, "message": "Data created!", "data": [createdItem] })
     }).catch((error: Error) => {
@@ -41,6 +43,8 @@ const updateItemByID = (req: Request, res: Response) => {
             name: updatedItem.name,
             price: updatedItem.price,
             stock: updatedItem.stock,
+            sale_price: updatedItem.sale_price,
+            image: updatedItem.image
         })
         res.status(200).json({ "success": true, "message": "Data updated!", "data": [updatedItem] })
     }).catch((error: Error) => {
