@@ -1,4 +1,6 @@
 import {itemRouter} from "./routes/item.route";
+import {categoryRouter} from "./routes/item-category.route";
+
 const { errorHandler, NotFoundError } = require('@softzone/common');
 import { Request, Response,  } from 'express';
 
@@ -19,6 +21,7 @@ app.use(session({
 }));
 
 app.use(itemRouter);
+app.use(categoryRouter);
 
 app.all('*', async (req: Request, res: Response) => {
     console.log(`Request Method: ${req.method}, Request URL: ${req.url}`);

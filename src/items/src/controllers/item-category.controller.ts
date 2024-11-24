@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import {ItemCategoryDto} from "../dtos/item-category.dto";
-const Category = require("../models/item-category.model");
+const {Category} = require("../models/item-category.model");
 
 const getCategoryById = (req: Request, res: Response) => {
     Category.findByID(req.query.id).then((rows: ItemCategoryDto[]) =>
@@ -19,8 +19,8 @@ const getCategories = (req: Request, res: Response) => {
 }
 
 const createCategory = (req: Request, res: Response) => {
-    Category.create(req.body.details).then(async (createdItem: ItemCategoryDto) => {
-        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdItem] })
+    Category.create(req.body.details).then(async (createdCategory: ItemCategoryDto) => {
+        res.status(200).json({ "success": true, "message": "Data created!", "data": [createdCategory] })
     }).catch((error: Error) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })

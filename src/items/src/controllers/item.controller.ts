@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-const Item = require("../models/item.model");
+const {Item} = require("../models/item.model");
 import {ItemDto} from "../dtos/item.dto";
 import {kafkaWrapper} from "../kafka-wrapper";
 import {ItemCreatedProducer} from "../events/producers/item-created-producer";
@@ -22,6 +22,7 @@ const getItems = (req: Request, res: Response) => {
 }
 
 const createItem = (req: Request, res: Response) => {
+    console.log(req.body)
     Item.create(req.body.details).then(async (createdItem: ItemDto) => {
         await new ItemCreatedProducer(kafkaWrapper.producer).produce({
             id: createdItem.id,
@@ -33,6 +34,7 @@ const createItem = (req: Request, res: Response) => {
         })
         res.status(200).json({ "success": true, "message": "Data created!", "data": [createdItem] })
     }).catch((error: Error) => {
+        console.log(error);
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })
 }
