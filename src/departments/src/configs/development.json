@@ -20,7 +20,7 @@
       "PORT": 5432,
       "USER": "postgres",
       "PASSWORD": "sa123456",
-      "DATABASE": "kltn/stores"
+      "DATABASE": "kltn/departments"
     }
   },
   "PRIVATE_INFORM": {
