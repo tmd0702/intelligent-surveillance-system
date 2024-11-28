@@ -6,4 +6,7 @@ export interface EmployeeDto {
     phone_number: string;
     email: string;
     position: string;
+    address: string;
+    department_id?: string;
+    face_id: string;
 }
