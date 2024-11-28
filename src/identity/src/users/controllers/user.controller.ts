@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-const User = require("../models/user.model");
+const {User} = require("../models/user.model");
 import {UserDto} from "../dtos/user.dto";
 import {UserCreatedProducer} from "../../events/producers/user-created-producer";
 import {kafkaWrapper} from "../../kafka-wrapper";

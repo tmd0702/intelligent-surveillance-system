@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package face_recog;
+
+service FaceRecog {
+  // A simple RPC.
+  //
+  // Obtains the MessageResponse at a given position.
+  rpc ExtractFaces(ClientInput) returns (ServerOutput) {}
+  rpc RegisFaces(ClientInput) returns (RegisOutput) {}
+}
+
+message ClientInput {
+  string b64_data = 1;
+}
+
+message FaceData {
+  string face_id = 1;
+  float confidence_score = 2;
+  float fake_prob = 3;
+}
+
+message ServerOutput {
+  repeated FaceData faces = 1;
+}
+message RegisOutput {
+  string face_id = 1;
+}

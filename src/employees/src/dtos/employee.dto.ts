@@ -10,4 +10,5 @@ export interface EmployeeDto {
     department_id: string;
     dob: string;
     address: string;
+    face_id: string;
 }
