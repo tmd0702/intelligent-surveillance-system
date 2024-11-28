@@ -5,4 +5,5 @@ export interface ItemDto {
     sale_price: number;
     stock: number;
     image: string[];
+    sku: string;
 }

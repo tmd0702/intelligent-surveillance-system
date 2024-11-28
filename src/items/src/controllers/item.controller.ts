@@ -22,7 +22,6 @@ const getItems = (req: Request, res: Response) => {
 }
 
 const createItem = (req: Request, res: Response) => {
-    console.log(req.body)
     Item.create(req.body.details).then(async (createdItem: ItemDto) => {
         await new ItemCreatedProducer(kafkaWrapper.producer).produce({
             id: createdItem.id,
