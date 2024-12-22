@@ -30,7 +30,8 @@ export const FaceRecognitionLog = {
         try {
             const faceRecognitionLogs = await db('face_recognition_logs')
                 .join('users', 'face_recognition_logs.face_id', 'users.face_id')
-                .select('face_recognition_logs.*', 'users.email')
+                .leftJoin("cameras", "cameras.id", "face_recognition_logs.camera_id")
+                .select('face_recognition_logs.*', 'users.email as email', 'users.phone_number as phone_number', "cameras.name as camera")
                 .where('users.email', email)
                 .orderBy('face_recognition_logs.recognized_at', 'desc');
             return faceRecognitionLogs;
@@ -42,7 +43,8 @@ export const FaceRecognitionLog = {
         try {
             const faceRecognitionLogs = await db('face_recognition_logs')
                 .join('users', 'face_recognition_logs.face_id', 'users.face_id')
-                .select('face_recognition_logs.*', 'users.phone_number')
+                .leftJoin("cameras", "cameras.id", "face_recognition_logs.camera_id")
+                .select('face_recognition_logs.*', 'users.phone_number as phone_number', 'users.email as email', 'cameras.name as camera')
                 .where('users.phone_number', phoneNumber)
                 .orderBy('face_recognition_logs.recognized_at', 'desc');
             return faceRecognitionLogs;

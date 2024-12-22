@@ -6,7 +6,7 @@ import {OrderItemDto} from "../dtos/order-item.dto";
 export const Order = {
     get: async () => {
         try {
-            const orders = await db.select("*").from('orders');
+            const orders = await db.select("orders.*", "stores.name as store").from('orders').leftJoin("stores", "stores.id", "orders.store_id");
             return orders;
         } catch (err) {
             throw err;

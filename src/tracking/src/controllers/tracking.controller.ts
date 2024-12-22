@@ -17,7 +17,7 @@ const trackByPhoneNumber = (req: Request, res: Response) => {
     });
 }
 const trackByEmail = (req: Request, res: Response) => {
-    FaceRecognitionLog.findByPhoneNumber(req.query.email).then((logs: FaceRecognitionLogDto) =>
+    FaceRecognitionLog.findByEmail(req.query.email).then((logs: FaceRecognitionLogDto) =>
         res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": logs})
     ).catch((error: Error) => {
         res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})

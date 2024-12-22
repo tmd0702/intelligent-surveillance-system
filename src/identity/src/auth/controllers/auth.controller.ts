@@ -137,7 +137,7 @@ const manualVerifyToken = async (req: Request, res: Response) => {
 
 const reGenerateAccessToken = async (req: Request, res: Response) => {
 
-    const refreshToken = (await Authentication.findTokenByuserID(req.body.user_id)).refresh_token;
+    const refreshToken = (await Authentication.findTokenByUserID(req.body.user_id)).refresh_token;
     Authentication.verifyRefreshToken(refreshToken)
         .then(({ tokenDetails }: any) => {
             const payload = { _id: tokenDetails._id, roles: tokenDetails.roles };

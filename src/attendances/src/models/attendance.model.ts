@@ -4,7 +4,7 @@ import {db} from '../index';
 export const Attendance = {
     get: async () => {
         try {
-            const attendances = await db.select("*").from('attendances');
+            const attendances = await db.select("attendances.*", "employees.employee_code as employee_code").from('attendances').leftJoin("employees", "employees.id", "attendances.employee_id");
             return attendances;
         } catch (err) {
             throw err;

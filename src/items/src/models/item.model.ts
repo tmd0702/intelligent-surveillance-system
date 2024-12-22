@@ -4,7 +4,14 @@ import {db} from '../index';
 export const Item = {
     get: async () => {
         try {
-            const items = await db.select("*").from('items');
+            const items = await db.select(
+                'items.*',
+                'stores.name as store',
+                'item-categories.name as category'
+            )
+                .from('items')
+                .leftJoin('stores', 'items.store_id', 'stores.id')
+                .leftJoin('item-categories', 'items.category_id', 'item-categories.id');
             return items;
         } catch (err) {
             throw err;
@@ -12,8 +19,15 @@ export const Item = {
     },
     findByID: async (id: string) => {
         try {
-            const Item = await db('items').where({ id }).first();
-            return Item;
+            const item = await db.select(
+                'items.*',
+                'stores.name as store',
+                'item-categories.name as category'
+            )
+                .from('items')
+                .leftJoin('stores', 'items.store_id', 'stores.id')
+                .leftJoin('item-categories', 'items.category_id', 'item-categories.id').where({ id }).first();
+            return item;
         } catch (err) {
             throw err;
         }
