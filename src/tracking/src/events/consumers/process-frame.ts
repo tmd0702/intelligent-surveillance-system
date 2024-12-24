@@ -17,7 +17,8 @@ export const processFrame = async (data: any) => {
         frame_url: 'test',
         is_archived: false,
         size_mb: getSizeInMB(data.frame_bytes['$binary']['base64']),
-        byte_data: data.frame_bytes['$binary']['base64'],
+        byte_data: Buffer.from(data.frame_bytes['$binary']['base64'], 'base64'),
+        // byte_data: data.frame_bytes['$binary']['base64'],
         encoding_format: data.encoding_format,
         resolution: data.resolution
     });

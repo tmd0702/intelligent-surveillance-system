@@ -5,7 +5,7 @@ export interface FrameLogDto {
     frame_url: string;
     size_mb: number;
     is_archived: boolean;
-    byte_data?: string;
+    byte_data?: Buffer;
     resolution?: string;
     encoding_format?: string;
 }
