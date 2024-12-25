@@ -2,6 +2,8 @@ from ultralytics import YOLO
 import cv2
 import utils
 import torch
+from PIL import Image
+import io
 import sys
 from models.rapidocr_openvino import RapidOCR
 from tools.predict_det import TextDetector
@@ -20,27 +22,28 @@ class PlateRecognizer:
         self._rapidocr_model = RapidOCR()
         self._text_detector = TextDetector(args)
 
-    def recog(self, frame):
+    def recog(self, frame_bytes):
+        frame = Image.open(io.BytesIO(frame_bytes))
+
+        # Convert the PIL image to a NumPy array
+        frame = np.array(frame)
         # = np.array(Image.open(BytesIO(image_bytes)))
-        frame_center_x, frame_center_y = frame.shape[1] / 2, frame.shape[0] / 2
+#         frame_center_x, frame_center_y = frame.shape[1] / 2, frame.shape[0] / 2
         license_plates = self._plate_detector(frame)
         if len(license_plates):
             true_plate = license_plates[0]
         else:
-            return None
+            return {'text': '', 'rec_conf': 0, 'det_conf': 0}
         if not len(true_plate.boxes):
-            return None
+            return {'text': '', 'rec_conf': 0, 'det_conf': 0}
         #true_plate = utils.find_center_plate(license_plates, frame_center_x, frame_center_y)
         true_plate_box = true_plate.boxes[0]
         x1, y1, x2, y2 = true_plate_box.xyxy[0][0], true_plate_box.xyxy[0][1], true_plate_box.xyxy[0][2], true_plate_box.xyxy[0][3]
         score, class_id = true_plate_box.conf[0], true_plate.names[int(true_plate_box.cls[0])]
         license_plate_crop = frame[int(y1):int(y2), int(x1): int(x2), :]
-        plt.imshow(license_plate_crop)
-        plt.show()
         license_plate_text, rec_conf = self.read_license_plate(license_plate_crop)
 
         result = {'text': license_plate_text, 'rec_conf': rec_conf, 'det_conf': score.cpu().item()}
-        print(result)
         return result
 
 
@@ -85,7 +88,7 @@ class PlateRecognizer:
                 conf_list.append(confidence)
 #             result = self._rapidocr_model(frame)[0][0]
 #             result_text, confidence = result[1], result[2]
-            return final_text.strip(), np.mean(conf_list)
+            return final_text.strip().replace('[', '').replace('·', '-').replace(']', '').replace(':', ''), np.mean(conf_list)
         except Exception as e:
             print(e)
             return '', 0

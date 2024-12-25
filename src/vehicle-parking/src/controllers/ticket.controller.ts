@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import {TicketDto} from "../dtos/ticket.dto";
-import {extractPlate} from "../plate-recog-client";
+import {extractPlates} from "../plate-recog-client";
 import {extractFaces} from "../face-recog-client";
 import {ParkingTicketStatus} from "@softzone/common";
 
@@ -22,18 +22,21 @@ const getTickets = (req: Request, res: Response) => {
     });
 }
 const checkIn = async (req: Request, res: Response) => {
-    const plate = await extractPlate(req.body.plate_b64);
-    const faces = await extractFaces(req.body.face_b64);
-    Ticket.create({face_id: faces[0].face_id, plate_number: plate.plate_number, check_in: new Date(), status: ParkingTicketStatus.ACTIVE}).then(async (createdTicket: TicketDto) => {
-        res.status(200).json({ "success": true, "message": "Check-in success", "data": [createdTicket] })
-    }).catch((error: Error) => {
-        res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
-    })
+    const faces = await extractFaces(req.body.details.face_b64);
+    const plate = await extractPlates(req.body.details.plate_b64);
+    if (faces.length == 0 || plate.plate_number == '') res.status(200).json({ "success": false, "message": "Cannot recognized identity or plate number. Please retry!", "data": [] });
+    else {
+        Ticket.create({face_id: faces[0].face_id, plate_number: plate.plate_number, check_in: new Date(), status: ParkingTicketStatus.ACTIVE}).then(async (createdTicket: TicketDto) => {
+            res.status(200).json({ "success": true, "message": "Check-in success", "data": [createdTicket] })
+        }).catch((error: Error) => {
+            res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
+        })
+    }
 }
 const checkOut = async (req: Request, res: Response) => {
-    const plate = await extractPlate(req.body.plate_b64);
-    const faces = await extractFaces(req.body.face_b64);
-    if (plate.confidence_score == 0 || faces.length == 0) {
+    const plate = await extractPlates(req.body.details.plate_b64);
+    const faces = await extractFaces(req.body.details.face_b64);
+    if (plate.plate_number == '' || faces.length == 0) {
         res.status(200).json({ "success": false, "message": "Invalid ticket. Please retry!", "data": [] })
     }
     const existsTicket = await Ticket.findCheckIn(faces[0].face_id, plate.plate_number);
@@ -69,5 +72,8 @@ module.exports = {
     getTickets,
     updateTicketByID,
     deleteTicketByID,
-    createTicket
+    createTicket,
+    checkIn,
+    checkOut
+
 }

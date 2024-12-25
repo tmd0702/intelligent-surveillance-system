@@ -28,3 +28,5 @@ export async function extractFaces(b64Data: string) {
     }
 }
 
+
+

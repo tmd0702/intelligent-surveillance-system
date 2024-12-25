@@ -18,8 +18,8 @@ const plateRecogProto = grpc.loadPackageDefinition(packageDefinition).plate_reco
 
 const client = new plateRecogProto.PlateRecog(`localhost:${Ports.PLATE_RECOG}`, grpc.credentials.createInsecure());
 
-export async function extractPlate(b64Data: string) {
-    const extractPlateAsync = promisify(client.ExtractPlate.bind(client));
+export async function extractPlates(b64Data: string) {
+    const extractPlateAsync = promisify(client.ExtractPlates.bind(client));
     try {
         const response = await extractPlateAsync({ b64_data: b64Data });
         return response.plate;

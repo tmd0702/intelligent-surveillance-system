@@ -89,6 +89,28 @@ class MockupClient {
             console.error('Update user error:', error);
         }
     }
+    async vehicleCheckIn(data, token) {
+        try {
+            const response = await fetch(`http://localhost:${Ports.VEHICLE_PARKING}/api/vehicle_parking/checkin`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    details: data,
+                    token: token,
+                })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update employee');
+            }
+
+            const responseObj = await response.json();
+            return responseObj;
+        } catch (error) {
+            console.error('Check in error:', error);
+        }
+    }
     async updateEmployee(id, data, token) {
         try {
             const response = await fetch(`http://localhost:${Ports.EMPLOYEES}/api/employees/update/id`, {
