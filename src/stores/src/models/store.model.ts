@@ -23,6 +23,7 @@ export const Store = {
             const [newStore] = await db('stores').insert(details).returning('*');
             return newStore;
         } catch (err) {
+            console.log('err:', err);
             throw err;
         }
     },
@@ -31,6 +32,7 @@ export const Store = {
             const [updatedStore] = await db('stores').where({ id }).update(newDetails).returning('*');
             return updatedStore;
         } catch (err) {
+            console.log('err:', err);
             throw err;
         }
     },

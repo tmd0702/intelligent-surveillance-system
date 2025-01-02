@@ -34,7 +34,7 @@ export const FaceRecognitionLog = {
                 .join('users', 'face_recognition_logs.face_id', 'users.face_id')
                 .leftJoin("cameras", "cameras.id", "face_recognition_logs.camera_id")
                 .leftJoin('frame_logs', "frame_logs.id", "face_recognition_logs.frame_id")
-                .select('face_recognition_logs.*', 'users.email as email', "frame_logs.byte_data as byte_data", 'users.phone_number as phone_number', 'users.first_name as first_name', 'users.last_name as last_name', "cameras.name as camera")
+                .select('face_recognition_logs.*', 'users.email as email', "frame_logs.byte_data as frame_byte_data", 'users.phone_number as phone_number', 'users.first_name as first_name', 'users.last_name as last_name', "cameras.name as camera")
                 .where('users.email', email)
                 .orderBy('face_recognition_logs.recognized_at', 'desc');
             return faceRecognitionLogs;
@@ -47,8 +47,8 @@ export const FaceRecognitionLog = {
             const faceRecognitionLogs = await db('face_recognition_logs')
                 .join('users', 'face_recognition_logs.face_id', 'users.face_id')
                 .leftJoin("cameras", "cameras.id", "face_recognition_logs.camera_id")
-                .leftJoin("cameras", "cameras.id", "face_recognition_logs.camera_id")
-                .select('face_recognition_logs.*', 'users.phone_number as phone_number', 'users.email as email', "frame_logs.byte_data as byte_data",  'users.first_name as first_name', 'users.last_name as last_name', 'cameras.name as camera')
+                .leftJoin("frame_logs", "frame_logs.id", "face_recognition_logs.frame_id")
+                .select('face_recognition_logs.*', 'users.phone_number as phone_number', 'users.email as email', "frame_logs.byte_data as frame_byte_data",  'users.first_name as first_name', 'users.last_name as last_name', 'cameras.name as camera')
                 .where('users.phone_number', phoneNumber)
                 .orderBy('face_recognition_logs.recognized_at', 'desc');
             return faceRecognitionLogs;

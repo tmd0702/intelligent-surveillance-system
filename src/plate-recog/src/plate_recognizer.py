@@ -5,6 +5,7 @@ import torch
 from PIL import Image
 import io
 import sys
+import base64
 from models.rapidocr_openvino import RapidOCR
 from tools.predict_det import TextDetector
 from time import time
@@ -33,17 +34,22 @@ class PlateRecognizer:
         if len(license_plates):
             true_plate = license_plates[0]
         else:
-            return {'text': '', 'rec_conf': 0, 'det_conf': 0}
+            return {'text': '', 'rec_conf': 0, 'det_conf': 0, 'cropped_image': ""}
         if not len(true_plate.boxes):
-            return {'text': '', 'rec_conf': 0, 'det_conf': 0}
+            return {'text': '', 'rec_conf': 0, 'det_conf': 0, 'cropped_image': ""}
         #true_plate = utils.find_center_plate(license_plates, frame_center_x, frame_center_y)
         true_plate_box = true_plate.boxes[0]
         x1, y1, x2, y2 = true_plate_box.xyxy[0][0], true_plate_box.xyxy[0][1], true_plate_box.xyxy[0][2], true_plate_box.xyxy[0][3]
         score, class_id = true_plate_box.conf[0], true_plate.names[int(true_plate_box.cls[0])]
         license_plate_crop = frame[int(y1):int(y2), int(x1): int(x2), :]
+        print('shape', license_plate_crop.shape)
+        success, encoded_image = cv2.imencode('.jpg', license_plate_crop)
+        if not success:
+            print("Image encoding failed")
+        base64_data = base64.b64encode(encoded_image).decode('utf-8')
         license_plate_text, rec_conf = self.read_license_plate(license_plate_crop)
-
-        result = {'text': license_plate_text, 'rec_conf': rec_conf, 'det_conf': score.cpu().item()}
+        print('b64 length:', len(base64_data))
+        result = {'text': license_plate_text, 'rec_conf': rec_conf, 'det_conf': score.cpu().item(), 'cropped_image': base64_data}
         return result
 
 

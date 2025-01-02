@@ -12,7 +12,13 @@ const getItemById = (req: Request, res: Response) => {
         res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
     });
 }
-
+const getItemsByStoreId = (req: Request, res: Response) => {
+    Item.findByStoreID(req.query.store_id).then((rows: ItemDto[]) =>
+        res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": rows})
+    ).catch((error: Error) => {
+        res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
+    });
+}
 const getItems = (req: Request, res: Response) => {
     Item.get().then((rows: ItemDto[]) =>
         res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": rows})
@@ -64,5 +70,6 @@ module.exports = {
     getItems,
     updateItemByID,
     deleteItemByID,
-    createItem
+    createItem,
+    getItemsByStoreId
 }

@@ -1,5 +1,7 @@
 import torch
 import timm, os
+from io import BytesIO
+import numpy as np
 import torchvision.transforms as transforms
 from PIL import Image
 
@@ -17,8 +19,10 @@ class FaceLivenessDetector:
             #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize as used during model training
         ])
 
-    def detect(self, frame):
+    def detect(self, image_bytes):
         try:
+            frame = Image.open(BytesIO(image_bytes))
+            frame = np.array(frame)
             processed_frame = self._preprocess(frame)
             with torch.no_grad():  # Disable gradient calculation for inference
                 output = self._model(processed_frame)

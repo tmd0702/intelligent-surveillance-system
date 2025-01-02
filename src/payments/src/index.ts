@@ -4,6 +4,8 @@ import {kafkaWrapper} from "./kafka-wrapper";
 import {StoreCreatedConsumer} from "./events/consumers/store-created-consumer";
 import {StoreUpdatedConsumer} from "./events/consumers/store-updated-consumer";
 import {OrderCreatedConsumer} from "./events/consumers/order-created-consumer";
+import {OrderUpdatedConsumer} from "./events/consumers/order-updated-consumer";
+
 const config = require('config');
 export const db: Knex = require('knex')({
     client: 'pg',
@@ -24,6 +26,7 @@ const start = async (): Promise<void> => {
         new StoreCreatedConsumer().consume();
         new StoreUpdatedConsumer().consume();
         new OrderCreatedConsumer().consume();
+        new OrderUpdatedConsumer().consume();
     } catch (err) {
         console.error(err);
     }

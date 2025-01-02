@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11plate_recog.proto\x12\x0bplate_recog\"\x1f\n\x0b\x43lientInput\x12\x10\n\x08\x62\x36\x34_data\x18\x01 \x01(\t\";\n\tPlateData\x12\x14\n\x0cplate_number\x18\x01 \x01(\t\x12\x18\n\x10\x63onfidence_score\x18\x02 \x01(\x02\"5\n\x0cServerOutput\x12%\n\x05plate\x18\x01 \x01(\x0b\x32\x16.plate_recog.PlateData2T\n\nPlateRecog\x12\x46\n\rExtractPlates\x12\x18.plate_recog.ClientInput\x1a\x19.plate_recog.ServerOutput\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11plate_recog.proto\x12\x0bplate_recog\"\x1f\n\x0b\x43lientInput\x12\x10\n\x08\x62\x36\x34_data\x18\x01 \x01(\t\"R\n\tPlateData\x12\x14\n\x0cplate_number\x18\x01 \x01(\t\x12\x18\n\x10\x63onfidence_score\x18\x02 \x01(\x02\x12\x15\n\rcropped_image\x18\x03 \x01(\t\"5\n\x0cServerOutput\x12%\n\x05plate\x18\x01 \x01(\x0b\x32\x16.plate_recog.PlateData2T\n\nPlateRecog\x12\x46\n\rExtractPlates\x12\x18.plate_recog.ClientInput\x1a\x19.plate_recog.ServerOutput\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,9 +34,9 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_CLIENTINPUT']._serialized_start=34
   _globals['_CLIENTINPUT']._serialized_end=65
   _globals['_PLATEDATA']._serialized_start=67
-  _globals['_PLATEDATA']._serialized_end=126
-  _globals['_SERVEROUTPUT']._serialized_start=128
-  _globals['_SERVEROUTPUT']._serialized_end=181
-  _globals['_PLATERECOG']._serialized_start=183
-  _globals['_PLATERECOG']._serialized_end=267
+  _globals['_PLATEDATA']._serialized_end=149
+  _globals['_SERVEROUTPUT']._serialized_start=151
+  _globals['_SERVEROUTPUT']._serialized_end=204
+  _globals['_PLATERECOG']._serialized_start=206
+  _globals['_PLATERECOG']._serialized_end=290
 # @@protoc_insertion_point(module_scope)

@@ -10,7 +10,7 @@ function getSizeInMB(base64String: string): number {
     return sizeInMB;
 }
 export const processFrame = async (data: any) => {
-    const faces = await extractFaces(data.frame_bytes['$binary']['base64']);
+    const faces = await extractFaces(data.frame_bytes['$binary']['base64'], true);
     const frame = await FrameLog.create({
         captured_at: data.timestamp,
         camera_id: data.camera_id,
@@ -23,12 +23,14 @@ export const processFrame = async (data: any) => {
         resolution: data.resolution
     });
     faces.forEach((recogMetadata: FaceRecogDto) => {
+        // console.log(recogMetadata)
         FaceRecognitionLog.create({
             camera_id: frame.camera_id,
             face_id: recogMetadata.face_id,
             frame_id: frame.id,
             confidence_score: recogMetadata.confidence_score,
-            recognized_at: frame.captured_at
+            recognized_at: frame.captured_at,
+            byte_data: Buffer.from(recogMetadata.cropped_image, 'base64')
         })
     })
 }

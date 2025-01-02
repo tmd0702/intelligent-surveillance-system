@@ -33,7 +33,7 @@ class PlateRecog(plate_recog_pb2_grpc.PlateRecogServicer):
         print(f"\nServer received request - {datetime.datetime.now()}")
         recog_result = self._plate_recognizer.recog(base64.b64decode(request.b64_data.encode('utf-8')))
         # yield plate_recog_pb2.ServerOutput(extracted_data=json.dumps(ocr.get_json_data()))
-        return plate_recog_pb2.ServerOutput(plate={'plate_number': recog_result['text'], 'confidence_score': (recog_result['rec_conf'] + recog_result['det_conf']) / 2})
+        return plate_recog_pb2.ServerOutput(plate={'plate_number': recog_result['text'], 'confidence_score': (recog_result['rec_conf'] + recog_result['det_conf']) / 2, 'cropped_image': recog_result['cropped_image']})
 
 
 def serve(cfg):

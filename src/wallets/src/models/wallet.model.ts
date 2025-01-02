@@ -39,9 +39,7 @@ export const Wallet = {
                 if (!wallet) {
                     throw new Error('User not found');
                 }
-
-                const newBalance = wallet.balance + amount;
-
+                const newBalance = Number(wallet.balance) + Number(amount);
                 const [updatedWallet] = await trx('wallets')
                     .where({ user_id: userId })
                     .update({ balance: newBalance })
@@ -73,12 +71,11 @@ export const Wallet = {
                 if (!wallet) {
                     throw new Error('User not found');
                 }
-
-                if (wallet.balance < amount) {
+                if (Number(wallet.balance) < Number(amount)) {
                     throw new Error('Insufficient balance');
                 }
 
-                const newBalance = wallet.balance - amount;
+                const newBalance = Number(wallet.balance) - Number(amount);
 
                 const [updatedWallet] = await trx('wallets')
                     .where({ user_id: userId })

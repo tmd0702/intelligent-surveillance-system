@@ -18,10 +18,10 @@ const faceRecogProto = grpc.loadPackageDefinition(packageDefinition).face_recog 
 
 const client = new faceRecogProto.FaceRecog(`localhost:${Ports.FACE_RECOG}`, grpc.credentials.createInsecure());
 
-export async function extractFaces(b64Data: string) {
+export async function extractFaces(b64Data: string, isRegis: boolean) {
     const extractFacesAsync = promisify(client.ExtractFaces.bind(client));
     try {
-        const response = await extractFacesAsync({ b64_data: b64Data });
+        const response = await extractFacesAsync({ b64_data: b64Data, is_regis: isRegis });
         return response.faces;
     } catch (error: any) {
         throw new Error('Error calling ExtractFaces: ' + error.message);

@@ -18,6 +18,15 @@ export const User = {
             throw err;
         }
     },
+    findByFaceID: async (faceId: string) => {
+        try {
+            const user = await db('users').where({ face_id: faceId }).first();
+            console.log('found user', user)
+            return user;
+        } catch (err) {
+            throw err;
+        }
+    },
     findByEmail: async (email: string) => {
         try {
             const user = await db('users').where({ email }).first();

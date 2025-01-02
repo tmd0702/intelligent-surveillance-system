@@ -28,7 +28,7 @@ export const Order = {
             throw err;
         }
     },
-    addItems: async (details: OrderItemDto[]) => {
+    addItems: async ( details: OrderItemDto[]) => {
         try {
             const status = await db('order_items').insert(details).returning('*');
             return status;
@@ -38,7 +38,7 @@ export const Order = {
     },
     findItemsByID: async (id: string) => {
         try {
-            const items = await db('order_items').where({ order_id: id });
+            const items = await db.select('order_items.*', 'items.name').from('order_items').leftJoin('items', 'items.id', 'order_items.item_id').where({ order_id: id });
             return items;
         } catch (err) {
             throw err;

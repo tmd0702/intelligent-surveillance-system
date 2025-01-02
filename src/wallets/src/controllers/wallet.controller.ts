@@ -27,9 +27,17 @@ const deposit = (req: Request, res: Response) => {
         res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
     })
 }
+const withdraw = (req: Request, res: Response) => {
+    Wallet.withdraw(req.body.user_id, req.body.amount).then(async (updatedWallet: WalletDto) => {
+        res.status(200).json({ "success": true, "message": "Deposit success!", "data": [updatedWallet] })
+    }).catch((error: Error) => {
+        res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
+    })
+}
 
 module.exports = {
     getWalletById,
     getWalletByUserId,
-    deposit
+    deposit,
+    withdraw
 }

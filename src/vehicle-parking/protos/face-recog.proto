@@ -17,6 +17,7 @@ message FaceData {
   string face_id = 1;
   float confidence_score = 2;
   float fake_prob = 3;
+  string cropped_image = 4;
 }
 
 message ServerOutput {

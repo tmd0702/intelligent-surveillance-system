@@ -61,6 +61,7 @@ const run = async () => {
                     console.error(`Face file not found for ${plateFile}`);
                 }
             }
+
         }
     });
     // const result = await cloudinary.uploadImage();

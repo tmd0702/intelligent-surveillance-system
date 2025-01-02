@@ -32,6 +32,22 @@ export const Item = {
             throw err;
         }
     },
+    findByStoreID: async (storeId: string) => {
+        try {
+            const item = await db.select(
+                'items.*',
+                'stores.name as store',
+                'item-categories.name as category'
+            )
+                .from('items')
+                .leftJoin('stores', 'items.store_id', 'stores.id')
+                .leftJoin('item-categories', 'items.category_id', 'item-categories.id').where({store_id: storeId });
+            return item;
+        } catch (err) {
+            throw err;
+        }
+    },
+
     create: async (ItemDetails: ItemDto) => {
         try {
             const [newItem] = await db('items').insert(ItemDetails).returning('*');

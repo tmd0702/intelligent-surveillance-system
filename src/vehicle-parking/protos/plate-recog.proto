@@ -16,6 +16,7 @@ message ClientInput {
 message PlateData {
   string plate_number = 1;
   float confidence_score = 2;
+  string cropped_image = 3;
 }
 
 message ServerOutput {

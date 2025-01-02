@@ -5,7 +5,7 @@ import {ParkingTicketStatus} from "@softzone/common";
 export const Ticket = {
     get: async () => {
         try {
-            const tickets = await db.select("*").from('tickets');
+            const tickets = await db.select("tickets.*", "users.first_name", "users.last_name", "users.email", "users.phone_number").from('tickets').leftJoin("users", "users.face_id", "tickets.face_id");
             return tickets;
         } catch (err) {
             throw err;

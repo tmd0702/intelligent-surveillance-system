@@ -24,6 +24,12 @@ const getPaymentsByUserId = (req: Request, res: Response) => {
     });
 }
 const createPayment = async (req: Request, res: Response) => {
+    const details = {
+        order_id: "",
+        user_id: "",
+        total_amount: "",
+        payment_method: "wallet"
+    }
     try {
         const order = await Order.findByID(req.body.details.order_id);
         if (!order) {
@@ -36,15 +42,16 @@ const createPayment = async (req: Request, res: Response) => {
                 throw new BadRequestError('Cannot pay for a cancelled order');
             }
             const newPayment = await Payment.create({...req.body.details, status: PaymentStatus.PENDING});
-            axios.post(`http://localhost:${Ports.WALLETS}/api/wallets/deposit`, {user_id: req.body.details.user_id, amount: req.body.details.total_amount})  // Replace with your actual server endpoint
+            axios.post(`http://localhost:${Ports.WALLETS}/api/wallets/withdraw`, {token: req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : null, user_id: req.body.details.user_id, amount: req.body.details.total_amount})
                 .then(async (response) => {
                     if (response.data.success) {
                         console.log('Deposit was successful:')
                         const updatedPayment = await Payment.updateByID(newPayment.id, {status: PaymentStatus.COMPLETED});
                         await new PaymentCreatedProducer(kafkaWrapper.producer).produce({
                             id: updatedPayment.id,
-                            orderId: updatedPayment.orderId
+                            orderId: updatedPayment.order_id
                         });
+                        await Order.updateByID(updatedPayment.order_id, {status: OrderStatus.COMPLETE});
                         res.status(200).json({"success": true, "message": "Payment successfully charged!", "data": [updatedPayment]})
                     } else {
                         console.log('Deposit failed:', response.data.message);
@@ -53,7 +60,7 @@ const createPayment = async (req: Request, res: Response) => {
                     }
                 })
                 .catch(async (error) => {
-                    console.error('Error making the deposit request:', error.message);
+                    console.error('Error making the withdraw request:', error.message);
                     const updatedPayment = await Payment.updateByID(newPayment.id, {status: PaymentStatus.FAILED});
                     res.status(200).json({"success": false, "message": error.message, "data": [updatedPayment]})
                 });
