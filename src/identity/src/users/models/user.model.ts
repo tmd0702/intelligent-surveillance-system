@@ -18,6 +18,14 @@ export const User = {
             throw err;
         }
     },
+    count: async() => {
+        try {
+            const total = await db('users').count("id as total");
+            return total;
+        } catch (err) {
+            throw err;
+        }
+    },
     findByEmail: async (email: string) => {
         try {
             const user = await db('users').where({ email }).first();

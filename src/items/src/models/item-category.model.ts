@@ -4,7 +4,7 @@ import {db} from '../index';
 export const Category = {
     get: async () => {
         try {
-            const categories = await db.select("*").from('item-categories');
+            const categories = await db.select("*").from('item-categories').orderBy('created_at', 'desc');
             return categories;
         } catch (err) {
             throw err;

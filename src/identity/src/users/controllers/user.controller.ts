@@ -21,9 +21,15 @@ const getUserByEmail = (req: Request, res: Response) => {
         res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": rows})
     ).catch((error: Error) => {
         res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
+    })
+}
+const count = (req: Request, res: Response) => {
+    User.count().then((count: any) =>
+        res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": count})
+    ).catch((error: Error) => {
+        res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
     });
 }
-
 const getUsers = (req: Request, res: Response) => {
     User.get().then((rows: UserDto[]) =>
         res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": rows})
@@ -32,11 +38,10 @@ const getUsers = (req: Request, res: Response) => {
     });
 }
 const addFace = async (req: Request, res: Response) => {
-    console.log('req.body.b64_data', req.body.b64_data.length)
     const faces = await extractFaces(req.body.b64_data, true);
     if (faces.length > 0) {
         const faceId = faces[0].face_id;
-        User.updateByID(req.body.id, {face_id: faceId}).then(async (updated: UserDto) => {
+        User.updateByID(req.body.id, {byte_data: Buffer.from(faces[0].cropped_image, 'base64'), face_id: faceId}).then(async (updated: UserDto) => {
             await new UserUpdatedProducer(kafkaWrapper.producer).produce({
                 id: updated.id,
                 first_name: updated.first_name,
@@ -145,5 +150,6 @@ module.exports = {
     updateUserByID,
     getUserByEmail,
     createUser,
-    addFace
+    addFace,
+    count
 }

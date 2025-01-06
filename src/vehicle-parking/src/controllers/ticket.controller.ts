@@ -22,11 +22,11 @@ const getTickets = (req: Request, res: Response) => {
     });
 }
 const checkIn = async (req: Request, res: Response) => {
-    const faces = await extractFaces(req.body.details.face_b64, false);
+    const faces = await extractFaces(req.body.details.face_b64, true);
     const plate = await extractPlates(req.body.details.plate_b64);
-    if (faces.length == 0 || plate.plate_number == '') res.status(200).json({ "success": false, "message": "Cannot recognized identity or plate number. Please retry!", "data": [] });
+    if (faces.length == 0 || plate.plate_number == '' || faces[0].confidence_score == 0) res.status(200).json({ "success": false, "message": "Cannot recognized identity or plate number. Please retry!", "data": [] });
     else {
-        // console.log('plate:', plate);
+        // console.log('tmp', tmp.face_id, tmp.confidence_score)
         Ticket.create({face_id: faces[0].face_id, face_checkin_byte_data: Buffer.from(faces[0].cropped_image, 'base64'), plate_checkin_byte_data: Buffer.from(plate.cropped_image, 'base64'), plate_number: plate.plate_number, check_in: new Date(), status: ParkingTicketStatus.ACTIVE}).then(async (createdTicket: TicketDto) => {
             res.status(200).json({ "success": true, "message": "Check-in success", "data": [createdTicket] })
         }).catch((error: Error) => {
@@ -37,15 +37,28 @@ const checkIn = async (req: Request, res: Response) => {
 const checkOut = async (req: Request, res: Response) => {
     const plate = await extractPlates(req.body.details.plate_b64);
     const faces = await extractFaces(req.body.details.face_b64, false);
-    if (plate.plate_number == '' || faces.length == 0) {
+    if (plate.plate_number == '' || faces.length == 0 || faces[0].face_id == '' || faces[0].confidence_score == 0) {
         res.status(200).json({ "success": false, "message": "Invalid ticket. Please retry!", "data": [] })
+    } else {
+        const existsTicket = await Ticket.findCheckIn(faces[0].face_id, plate.plate_number);
+        if (existsTicket) {
+            Ticket.updateByID(existsTicket.id, {
+                face_id: faces[0].face_id,
+                plate_number: plate.plate_number,
+                check_out: new Date(),
+                status: ParkingTicketStatus.COMPLETED,
+                face_checkout_byte_data: Buffer.from(faces[0].cropped_image, 'base64'),
+                plate_checkout_byte_data: Buffer.from(plate.cropped_image, 'base64')
+            }).then(async (createdTicket: TicketDto) => {
+                res.status(200).json({"success": true, "message": "Check-out success", "data": [createdTicket]})
+            }).catch((error: Error) => {
+                res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
+            })
+        } else {
+            res.status(200).json({"success": false, "message": "Check-out failed. Invalid ticket.", "data": []})
+        }
     }
-    const existsTicket = await Ticket.findCheckIn(faces[0].face_id, plate.plate_number);
-    Ticket.updateByID(existsTicket.id, {face_id: faces[0].face_id, plate_number: plate.plate_number, check_out: new Date(), status: ParkingTicketStatus.ACTIVE, face_checkout_byte_data: Buffer.from(faces[0].cropped_image, 'base64'), plate_checkout_byte_data: Buffer.from(plate.cropped_image, 'base64')}).then(async (createdTicket: TicketDto) => {
-        res.status(200).json({ "success": true, "message": "Check-out success", "data": [createdTicket] })
-    }).catch((error: Error) => {
-        res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
-    })
+
 }
 const createTicket = (req: Request, res: Response) => {
     Ticket.create(req.body.details).then(async (createdTicket: TicketDto) => {

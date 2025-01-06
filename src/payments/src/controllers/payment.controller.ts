@@ -23,13 +23,21 @@ const getPaymentsByUserId = (req: Request, res: Response) => {
         res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
     });
 }
+const countSales = async(req: Request, res: Response) => {
+    Payment.countSales().then((sales: any) => {
+        res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": sales})
+    }).catch((error: Error) => {
+        res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
+    });
+}
+const todayRevenue = async (req: Request, res: Response) => {
+    Payment.todayRevenue().then((revenue: any) => {
+        res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": revenue})
+    }).catch((error: Error) => {
+        res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
+    });
+}
 const createPayment = async (req: Request, res: Response) => {
-    const details = {
-        order_id: "",
-        user_id: "",
-        total_amount: "",
-        payment_method: "wallet"
-    }
     try {
         const order = await Order.findByID(req.body.details.order_id);
         if (!order) {
@@ -73,5 +81,7 @@ const createPayment = async (req: Request, res: Response) => {
 module.exports = {
     getPaymentById,
     getPaymentsByUserId,
-    createPayment
+    createPayment,
+    countSales,
+    todayRevenue
 }

@@ -18,6 +18,14 @@ export const Employee = {
             throw err;
         }
     },
+    findByFaceID: async (faceId: string) => {
+        try {
+            const employee = await db('employees').where({ face_id: faceId }).first();
+            return employee;
+        } catch (err) {
+            throw err;
+        }
+    },
     create: async (details: EmployeeDto) => {
         try {
             const [newEmployee] = await db('employees').insert(details).returning('*');

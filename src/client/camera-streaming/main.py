@@ -11,6 +11,7 @@ import random
 async def mockup_stream(producer):
     config = load_config('configs/development.yaml')
     cameras = fetch_cameras(config)
+    mm = {}
     dir_list = os.listdir('data')
     videos = list(map(lambda x: os.path.join('data', x), dir_list))
     if len(videos) < len(cameras):
@@ -21,7 +22,8 @@ async def mockup_stream(producer):
 
         tasks = []
         for camera in cameras:
-            topic = f'camera.streaming.{camera[6]}'
+            topic = f'camera.streaming.{camera[6]}' if mm.get(f'camera.streaming.{camera[6]}', None) == None else f'camera.streaming.{camera[6]}.tmp'
+            mm[f'camera.streaming.{camera[6]}'] = mm.get(f'camera.streaming.{camera[6]}', 0) + 1
             video_file = random.choice(videos)
             tasks.append(asyncio.create_task(publish_video(video_file, camera[0], topic, producer)))
 
@@ -61,6 +63,7 @@ async def publish_video(video_file, camera_id, topic, producer):
         now = datetime.now(local_timezone)
         formatted_timestamp = now.strftime('%Y-%m-%d %H:%M:%S.%f%z')
         msg = {
+                "topic": topic,
                 "frame_bytes": buffer.tobytes(),#base64.b64encode(buffer.tobytes()).decode("utf-8"),
                 "camera_id": camera_id,
                 "resolution": get_video_resolution_label(height),

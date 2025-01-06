@@ -4,7 +4,7 @@ import {db} from '../index';
 export const Department = {
     get: async () => {
         try {
-            const departments = await db.select("*").from('departments');
+            const departments = await db.select("*").from('departments').orderBy('created_at', 'desc');
             return departments;
         } catch (err) {
             throw err;

@@ -3,6 +3,8 @@ import {Knex} from "knex";
 import {kafkaWrapper} from "./kafka-wrapper";
 import {EmployeeCreatedConsumer} from "./events/consumers/employee-created-consumer";
 import {EmployeeUpdatedConsumer} from "./events/consumers/employee-updated-consumer";
+import {CameraStreamingConsumer} from './events/consumers/camera-streaming-consumer';
+
 const config = require('config');
 export const db: Knex = require('knex')({
     client: 'pg',
@@ -22,6 +24,7 @@ const start = async (): Promise<void> => {
         // process.on('SIGTERM', () => kafkaWrapper.disconnect());
         new EmployeeCreatedConsumer().consume();
         new EmployeeUpdatedConsumer().consume();
+        new CameraStreamingConsumer().consume();
     } catch (err) {
         console.error(err);
     }

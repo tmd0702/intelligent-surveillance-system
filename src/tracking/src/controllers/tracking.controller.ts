@@ -4,16 +4,35 @@ import {FaceRecognitionLogDto} from "../dtos/face-recognition-log.dto";
 import {User} from "../models/user.model";
 import {extractFaces} from "../face-recog-client";
 import {UserDto} from "../dtos/user.dto";
-const trackByFaceId = (req: Request, res: Response) => {
-    FaceRecognitionLog.findByFaceID(req.query.face_id).then((logs: FaceRecognitionLogDto) =>
+
+const trackByFaceImage = async (req: Request, res: Response) => {
+    const faces = await extractFaces(req.body.b64_data, false);
+    if (faces.length == 0 || faces[0].confidence_score == 0) res.status(200).json({ "success": false, "message": "Cannot recognized facial identity. Please retry!", "data": [] });
+    else {
+        FaceRecognitionLog.findByFaceID(faces[0].face_id).then(async (logs: FaceRecognitionLogDto) => {
+            res.status(200).json({ "success": true, "message": "Data successfully queried from the database.", "data": logs })
+        }).catch((error: Error) => {
+            res.status(200).json({ "success": false, "message": error.message || "Unknown error occurred", "data": [] })
+        })
+    }
+}
+const trackByPhoneNumber = (req: Request, res: Response) => {
+    FaceRecognitionLog.findByPhoneNumber(req.query.phone_number).then((logs: FaceRecognitionLogDto) =>
         res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": logs})
     ).catch((error: Error) => {
         res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
     });
 }
-const trackByPhoneNumber = (req: Request, res: Response) => {
-    FaceRecognitionLog.findByPhoneNumber(req.query.phone_number).then((logs: FaceRecognitionLogDto) =>
-        res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": logs})
+const getTodayVisitors = (req: Request, res: Response) => {
+    FaceRecognitionLog.getDistinctFaceCountToday().then((visitors: any) =>
+        res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": visitors})
+    ).catch((error: Error) => {
+        res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
+    });
+}
+const getMonthlyVisitors = (req: Request, res: Response) => {
+    FaceRecognitionLog.getDistinctFaceCountByMonth().then((visitors: any) =>
+        res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": visitors})
     ).catch((error: Error) => {
         res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
     });
@@ -53,6 +72,8 @@ module.exports = {
     trackById,
     trackByEmail,
     trackByPhoneNumber,
-    trackByFaceId,
-    getUserByFaceId
+    trackByFaceImage,
+    getUserByFaceId,
+    getTodayVisitors,
+    getMonthlyVisitors
 }

@@ -4,6 +4,7 @@ import {EmployeeDto} from "../dtos/employee.dto";
 import {EmployeeCreatedProducer} from "../events/producers/employee-created-producer";
 import {kafkaWrapper} from "../kafka-wrapper";
 import {EmployeeUpdatedProducer} from "../events/producers/employee-updated-producer";
+import {extractFaces} from "../face-recog-client";
 
 const getEmployeeById = (req: Request, res: Response) => {
     Employee.findByID(req.query.id).then((employee: EmployeeDto) =>
@@ -12,7 +13,35 @@ const getEmployeeById = (req: Request, res: Response) => {
         res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
     });
 }
+const addFace = async (req: Request, res: Response) => {
+    const faces = await extractFaces(req.body.b64_data, true);
+    if (faces.length > 0) {
+        const faceId = faces[0].face_id;
+        const byteData = Buffer.from(faces[0].cropped_image, 'base64');
+        Employee.updateByID(req.body.id, {byte_data: byteData, face_id: faceId}).then(async (updated: EmployeeDto) => {
+            await new EmployeeUpdatedProducer(kafkaWrapper.producer).produce({
+                id: updated.id,
+                employee_code: updated.employee_code,
+                first_name: updated.first_name,
+                last_name: updated.last_name,
+                phone_number: updated.phone_number,
+                email: updated.email,
+                position: updated.position,
+                address: updated.address,
+                department_id: updated.department_id,
+                face_id: updated.face_id,
+                byte_data: faces[0].cropped_image
+            });
+            res.status(200).json({"success": true, "message": "Data successfully added to the database.", "data": [updated]})
+        }).catch((err: Error) => {
+            res.status(200).json({ "success": false, "message": "Update error", "data": [] });
+        })
 
+    } else {
+        res.status(200).json({"success": false, "message": "Face not recognized. Please retry!", "data": []})
+    }
+
+}
 const getEmployees = (req: Request, res: Response) => {
     Employee.get().then((rows: EmployeeDto[]) =>
         res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": rows})
@@ -49,5 +78,6 @@ module.exports = {
     getEmployees,
     updateEmployeeByID,
     deleteEmployeeByID,
-    createEmployee
+    createEmployee,
+    addFace
 }

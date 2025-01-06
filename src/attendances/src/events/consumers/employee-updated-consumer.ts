@@ -14,7 +14,8 @@ export class EmployeeUpdatedConsumer extends Consumer<EmployeeUpdatedEvent> {
             department_id: data.department_id,
             email: data.email,
             address: data.address,
-            face_id: data.face_id
+            face_id: data.face_id,
+            byte_data: data.byte_data? Buffer.from(data.byte_data.toString(), 'base64') : data.byte_data
         });
     }
 }

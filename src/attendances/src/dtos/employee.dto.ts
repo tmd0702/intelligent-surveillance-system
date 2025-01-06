@@ -9,4 +9,5 @@ export interface EmployeeDto {
     address: string;
     department_id?: string;
     face_id: string;
+    byte_data?: Buffer;
 }

@@ -2,7 +2,7 @@ import WebSocket from 'ws';
 
 const clients: Set<WebSocket> = new Set();
 
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ port: 3849 });
 
 wss.on('connection', (ws: WebSocket) => {
     console.log('WebSocket client connected');
@@ -18,7 +18,7 @@ wss.on('connection', (ws: WebSocket) => {
         clients.delete(ws);
     });
 });
-
+console.log('wss', wss)
 export const broadcastFrame = (data: string): void => {
     clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {

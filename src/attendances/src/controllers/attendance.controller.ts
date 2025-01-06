@@ -17,8 +17,14 @@ const getAttendancesByEmployeeId = (req: Request, res: Response) => {
     });
 }
 const getAttendances = (req: Request, res: Response) => {
-    Attendance.get().then((attendances: AttendanceDto[]) =>
-        res.status(200).json({"success": true, "message": "Data successfully queried from the database.", "data": attendances})
+    Attendance.get().then((attendances: AttendanceDto[]) => {
+        // console.log('res', attendances)
+        res.status(200).json({
+            "success": true,
+            "message": "Data successfully queried from the database.",
+            "data": attendances
+        })
+        }
     ).catch((error: Error) => {
         res.status(200).json({"success": false, "message": error.message || "Unknown error occurred", "data": []})
     });

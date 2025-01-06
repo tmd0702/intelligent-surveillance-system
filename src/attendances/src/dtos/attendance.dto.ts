@@ -1,8 +1,8 @@
 export interface AttendanceDto {
-    id: string;
+    id?: string;
     employee_id: string;
-    check_in: string;
-    check_out: string;
+    created_at?: string;
+    confidence_score?: number;
     status: string;
     byte_data?: Buffer;
 }

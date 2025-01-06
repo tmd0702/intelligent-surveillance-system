@@ -11,7 +11,8 @@ export const Item = {
             )
                 .from('items')
                 .leftJoin('stores', 'items.store_id', 'stores.id')
-                .leftJoin('item-categories', 'items.category_id', 'item-categories.id');
+                .leftJoin('item-categories', 'items.category_id', 'item-categories.id')
+                .orderBy('items.created_at', 'desc');
             return items;
         } catch (err) {
             throw err;

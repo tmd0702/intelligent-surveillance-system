@@ -3,6 +3,35 @@ import {FrameLog} from "../../models/frame-log.model";
 import {FaceRecognitionLog} from "../../models/face-recognition-log.model";
 import {extractFaces} from "../../face-recog-client";
 import {FaceRecogDto} from "../../dtos/face-recog.dto";
+import WebSocket from 'ws';
+
+const clients: Set<WebSocket> = new Set();
+
+const wss = new WebSocket.Server({ port: 3848 });
+
+wss.on('connection', (ws: WebSocket) => {
+    console.log('WebSocket client connected');
+    clients.add(ws);
+
+    ws.on('close', () => {
+        console.log('WebSocket client disconnected');
+        clients.delete(ws);
+    });
+
+    ws.on('error', (err) => {
+        console.error('WebSocket error:', err);
+        clients.delete(ws);
+    });
+});
+
+const broadcastFrame = (data: string): void => {
+    clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(data);
+        }
+    });
+};
+
 function getSizeInMB(base64String: string): number {
     const buffer = Buffer.from(base64String, 'base64');
     const sizeInBytes = buffer.length;
@@ -10,6 +39,10 @@ function getSizeInMB(base64String: string): number {
     return sizeInMB;
 }
 export const processFrame = async (data: any) => {
+    broadcastFrame(JSON.stringify({
+        "event": data.topic,
+        "data": data.frame_bytes['$binary']['base64']
+    }));
     const faces = await extractFaces(data.frame_bytes['$binary']['base64'], true);
     const frame = await FrameLog.create({
         captured_at: data.timestamp,

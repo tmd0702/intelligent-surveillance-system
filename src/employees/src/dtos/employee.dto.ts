@@ -11,4 +11,5 @@ export interface EmployeeDto {
     dob: string;
     address: string;
     face_id: string;
+    byte_data?: Buffer;
 }

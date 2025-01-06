@@ -36,6 +36,7 @@ export const Ticket = {
         }
     },
     create: async (details: TicketDto) => {
+        // console.log('details', details)
         try {
             const [newTicket] = await db('tickets').insert(details).returning('*');
             return newTicket;
