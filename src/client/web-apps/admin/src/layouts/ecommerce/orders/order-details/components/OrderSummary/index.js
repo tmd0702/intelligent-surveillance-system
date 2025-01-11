@@ -17,7 +17,7 @@ function OrderSummary({detail, items}) {
         </MDTypography>
         <MDBox ml={1}>
           <MDTypography variant="body2" fontWeight="medium">
-            ${detail.total_amount}
+            ${Math.round(detail.total_amount * 100, 2) / 100}
           </MDTypography>
         </MDBox>
       </MDBox>
@@ -38,7 +38,7 @@ function OrderSummary({detail, items}) {
         </MDTypography>
         <MDBox ml={1}>
           <MDTypography variant="body1" fontWeight="medium">
-            ${detail.total_amount}
+            ${Math.round(detail.total_amount * 100, 2) / 100}
           </MDTypography>
         </MDBox>
       </MDBox>

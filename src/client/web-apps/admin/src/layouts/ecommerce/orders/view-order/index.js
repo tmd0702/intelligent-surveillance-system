@@ -21,7 +21,8 @@ import PaymentDetails from "layouts/ecommerce/orders/order-details/components/Pa
 import BillingInformation from "layouts/ecommerce/orders/order-details/components/BillingInformation";
 import OrderSummary from "layouts/ecommerce/orders/order-details/components/OrderSummary";
 
-function View({detail}) {
+function View({rdetail}) {
+  const [detail, setDetail] = useState(rdetail);
   const [items, setItems] = useState([]);
   const [user, setUser] = useState();
   const [store, setStore] = useState({});
@@ -63,7 +64,7 @@ function View({detail}) {
                   <Grid container spacing={3}>
                     <Grid item xs={12} md={6} lg={6}>
                       {/* <TrackOrder /> */}
-                      <BillingInformation detail={detail} user={user} setUser={setUser} />
+                      <BillingInformation setDetail={setDetail} detail={detail} user={user} setUser={setUser} />
                       {/* <PaymentDetails /> */}
                     </Grid>
                     

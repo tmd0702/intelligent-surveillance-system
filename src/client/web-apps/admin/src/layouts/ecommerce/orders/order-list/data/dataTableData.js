@@ -65,7 +65,7 @@ const dataTableData = {
     //     );
     //   },
     // },
-    { Header: "revenue", accessor: "total_amount", Cell: ({ value }) => <DefaultCell value={value} /> },
+    { Header: "revenue", accessor: "total_amount", Cell: ({ value }) => <DefaultCell value={value? Math.round(value * 100, 2) / 100 : value} /> },
   ],
 
   rows: [

@@ -8,6 +8,8 @@ import { useRef, useState } from "react";
 import * as FinderServices from 'services/FinderServices';
 import * as PaymentServices from 'services/PaymentServices';
 import * as OrderServices from 'services/OrderServices';
+import { useContext } from "react";
+import { DataContext } from "App";
 // Softzone context
 import { useMaterialUIController } from "context";
 
@@ -25,8 +27,9 @@ function getImageDataBinaryBase64(imageData) {
 
 
 let stream, canvas;
-function BillingInformation({detail, user, setUser}) {
+function BillingInformation({setDetail, detail, user, setUser}) {
   const videoRef = useRef(null);
+  const {setOpenAlert, setStatusAlert, setContentAlert} = useContext(DataContext);
   const canvasRef = useRef(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [controller] = useMaterialUIController();
@@ -39,11 +42,15 @@ function BillingInformation({detail, user, setUser}) {
       total_amount: detail.total_amount
     }
     PaymentServices.addPayment(details).then(result => {
-      console.log("payment", result);
       if (result?.success) {
-  
+        setContentAlert(result.message);
+        setStatusAlert('success');
+        setOpenAlert(true);
+        setDetail({...detail, status: 'complete'});
       } else {
-  
+        setContentAlert(result.message);
+        setStatusAlert('error');
+        setOpenAlert(true);
       }
     })
   }
@@ -114,20 +121,26 @@ function BillingInformation({detail, user, setUser}) {
   const handleCapture = () => {
     const base64Frame = getImageDataBinaryBase64(currImageData);
     FinderServices.getUserByFaceId(base64Frame).then(result => {
-      console.log('track result', result);
       if (result?.success && result.data) {
-        OrderServices.updateOrder(detail.id, {user_id: result.data.id}).then(result => {
-          console.log('order update', result);
-          if (result?.success) {
-            
+        
+        OrderServices.updateOrder(detail.id, {user_id: result.data.id}).then(uresult => {
+          if (uresult?.success) {
+            setContentAlert(`User ${result.data.email} recognized`)
+            setStatusAlert('success');
+            setOpenAlert(true);
           } else {
-            console.log('update order failed', result.message);
+            setContentAlert(`${uresult.message}`)
+            setStatusAlert('error');
+            setOpenAlert(true);
           }
         })
         setUser(result.data);
         handleStopCamera();
       } else {
-        // handleOpenCamera();
+        setContentAlert('Cannot recognized, please register your face for further processing!')
+        setStatusAlert('error');
+        setOpenAlert(true);
+
       }
     })
     
@@ -197,14 +210,14 @@ function BillingInformation({detail, user, setUser}) {
             <MDTypography variant="button" fontWeight="medium" textTransform="capitalize">
               {user.first_name + " " + user.last_name}
             </MDTypography>
-            <MDButton
+            {detail.status != 'complete' && <MDButton
               variant="gradient"
               color="dark"
               width='70%'
               onClick={handleOpenCamera}
             >
               {"Change"}
-          </MDButton>
+          </MDButton>}
           </MDBox>
           {/* <MDBox mb={1} lineHeight={0}>
             <MDTypography variant="caption" fontWeight="regular" color="text">
@@ -236,14 +249,14 @@ function BillingInformation({detail, user, setUser}) {
               FRB1235476
             </MDTypography>
           </MDTypography> */}
-          <MDButton
+          {detail.status != 'complete' && <MDButton
               variant="gradient"
               color="dark"
               width='70%'
               onClick={handlePayment}
             >
               {"Payment"}
-          </MDButton>
+          </MDButton>}
         </MDBox>}
       </MDBox>
     </>

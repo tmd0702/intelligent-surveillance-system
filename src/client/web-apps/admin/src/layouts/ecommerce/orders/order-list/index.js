@@ -68,7 +68,7 @@ function OrderList() {
   }
   const handleClickView = (detail) => {
     console.log('detail', detail);
-    setModalPage(<View detail={detail} handleClickUpdate={handleClickUpdate}/>)
+    setModalPage(<View rdetail={detail} handleClickUpdate={handleClickUpdate}/>)
     setOpenModal(true);
   }
   const handleClickUpdate = (detail) => {

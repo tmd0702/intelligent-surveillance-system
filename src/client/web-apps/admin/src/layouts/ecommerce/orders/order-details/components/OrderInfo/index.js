@@ -10,7 +10,6 @@ import MDAvatar from "components/MDAvatar";
 import MDBadge from "components/MDBadge";
 
 function OrderInfo({items, detail}) {
-  console.log('items', items)
   return (
 
     <div style={{maxHeight: '100px', width: '100%', overflowY: 'scroll', backgroundColor: '#eee', paddingLeft: 10, paddingRight: 10}}>
@@ -34,7 +33,7 @@ function OrderInfo({items, detail}) {
       </Grid>
       <Grid item xs={12} md={6} sx={{ textAlign: "right" }}>
         <MDButton variant="gradient" color="dark" size="small">
-          ${item.price}
+          ${item.sale_price}
         </MDButton>
         <MDTypography ml={2} variant="button" color="text">
             x {item.quantity}
