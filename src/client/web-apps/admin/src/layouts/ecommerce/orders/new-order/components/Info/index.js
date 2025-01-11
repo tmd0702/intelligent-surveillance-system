@@ -93,7 +93,7 @@ function Info({stores, setInfo, info, selectedItems, setSelectedItems}) {
                 Total Amount
               </MDTypography>
             </MDBox>
-            <MDTypography type="text">{info.total_amount}</MDTypography>
+            <MDTypography type="text">{Math.round(info.total_amount * 100 , 2) / 100}</MDTypography>
           </Grid>
         </Grid>
       </MDBox>

@@ -10,19 +10,22 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDEditor from "components/MDEditor";
 import MDInput from "components/MDInput";
+import { useContext } from "react";
+import { DataContext } from "App";
 // NewProduct page components
 import FormField from "../FormField";
 
 function Info({info}) {
+  const {setOpenAlert, setStatusAlert, setContentAlert} = useContext(DataContext);
   const [amount, setAmount] = useState(0);
   const [balance, setBalance] = useState(0);
   useEffect(() => {
     WalletServices.getBalanceByUserId(info.id).then(result => {
-      console.log('wallet', result)
       if (result?.success) {
+        
         setBalance(result.data[0].balance);
       } else {
-
+        
       }
     })
   }, [])
@@ -30,9 +33,14 @@ function Info({info}) {
     WalletServices.deposit(info.id, amount).then(result => {
       setAmount(0);
       if (result?.success) {
+        setContentAlert(result.message);
+        setStatusAlert('success');
+        setOpenAlert(true);
         setBalance(Number(balance) + Number(amount));
       } else {
-
+        setContentAlert(result.message);
+        setStatusAlert('error');
+        setOpenAlert(true);
       }
     })
     
