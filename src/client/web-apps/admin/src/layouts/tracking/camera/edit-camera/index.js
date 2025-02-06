@@ -13,6 +13,7 @@ function Edit({locations, info, handleClickView}) {
     const details = {...detail};
     details['location_id'] = detail.location_id.id;
     delete details['location'];
+    delete details['floor_number'];
     CameraServices.updateCamera(details.id, details).then(result => {
       if (result?.success) {
         setContentAlert(result.message);

@@ -34,16 +34,16 @@ function Viewer() {
   const openMenu = (event) => setMenu(event.currentTarget);
   const closeMenu = () => setMenu(null);
   const onMessageReceived = (receivedData) => {
-    if (selected !== undefined ) console.log(`camera.streaming.${selected.floor_number.toLowerCase()}`, ' ' , receivedData.event);
-    if (selected !== undefined && `camera.streaming.${selected.floor_number.toLowerCase()}` == receivedData.event) {
+    if (selected !== undefined && `camera.streaming.${selected?.floor_number.toLowerCase()}` == receivedData.event) {
       setFrame('data:image/jpeg;base64,' + receivedData.data)
     }
   }
   useEffect(() => {
-    if (selected !== undefined) console.log(`camera.streaming.${selected.floor_number.toLowerCase()}`);
+    registerOnViewerCallback((receivedData) => onMessageReceived(receivedData));
   }, [selected])
   useEffect(() => {
-    registerOnViewerCallback((receivedData) => onMessageReceived(receivedData));
+    
+    
     CamerasServices.getCameras().then(result => {
       if (result?.success) {
         setCameras(result.data);
@@ -76,7 +76,7 @@ function Viewer() {
       <MDBox>
           <Autocomplete
           variant="outlined"
-          value={selected}
+          value={selected?.id}
           onChange={(e, newValue) => setSelected(newValue)}
           style={{width: "50%"}}
               options={cameras.map((camera) => {return {id: camera.id, label: camera.name, floor_number: camera.floor_number}})}
@@ -89,7 +89,7 @@ function Viewer() {
               )}
           />
       </MDBox>
-      <img src={frame}></img>
+      <img style={{marginTop: 20, border: '2px solid black'}} width={'90%'} src={frame}></img>
     </MDBox>
     
   </DashboardLayout>

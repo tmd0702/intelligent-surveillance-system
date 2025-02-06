@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import { useEffect } from "react";
 import * as StoreCategoryServices from 'services/StoreCategoryServices';
 import * as StoreServices from 'services/StoreServices';
-
+import {CSVLink, CSVDownload} from 'react-csv';
 // @mui material components
 import Card from "@mui/material/Card";
 import DModal from "components/DModal";
@@ -34,6 +34,16 @@ function StoreCategoryList() {
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [csvData, setCsvData] = useState([]);
+    const csvLink = useRef(null);
+    const exportCsv = (event) => {
+      StoreCategoryServices.getStoreCategories().then(result => {
+        if (result.success) {
+          setCsvData(result.data);
+          setTimeout(() => {csvLink.current?.link.click();}, 0)
+        }
+      })
+    }
   const openMenu = (event) => setMenu(event.currentTarget);
   const closeMenu = () => setMenu(null);
   useEffect(() => {
@@ -96,10 +106,17 @@ function StoreCategoryList() {
             </MDButton>
             {renderMenu}
             <MDBox ml={1}>
-              <MDButton variant="outlined" color="dark">
+              <MDButton onClick={exportCsv} variant="outlined" color="dark">
                 <Icon>description</Icon>
                 &nbsp;export csv
               </MDButton>
+              <CSVLink
+                data={csvData}
+                filename="users.csv"
+                className="hidden"
+                ref={csvLink}
+                target="_blank"
+              />
             </MDBox>
           </MDBox>
         </MDBox>

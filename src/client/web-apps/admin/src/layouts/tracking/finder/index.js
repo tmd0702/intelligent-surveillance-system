@@ -1,10 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useContext } from "react";
 import { Autocomplete } from "@mui/material";
 import { Buffer } from "buffer";
 import { useEffect } from "react";
 import * as LocationServices from 'services/LocationServices';
 // @mui material components
 import {Button} from "@mui/material";
+import { DataContext } from "App";
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
 import FormField from "layouts/applications/wizard/components/FormField";
@@ -48,6 +49,7 @@ function Finder() {
   const [tableData, setTableData] = useState(dataTableData);
   const [menu, setMenu] = useState(null);
   const [query, setQuery] = useState('');
+  const {setContentAlert, setStatusAlert, setOpenAlert} = useContext(DataContext);
   const [queryType, setQueryType] = useState('email');
   const [loading, setLoading] = useState(true);
   const [faceImage, setFaceImage] = useState();
@@ -107,18 +109,40 @@ function Finder() {
       FinderServices.getByEmail(query).then(result => {
         if (result?.success) {
           setTableData({...tableData, rows: result.data});
+          setContentAlert(result.message);
+          setStatusAlert('success');
+          setOpenAlert(true);
+        } else {
+          setContentAlert(result.message);
+          setStatusAlert('error');
+          setOpenAlert(true);
         }
       })
     } else if (queryType == 'phone') {
       FinderServices.getByPhoneNumber(query).then(result => {
         if (result?.success) {
           setTableData({...tableData, rows: result.data});
+          setContentAlert(result.message);
+          setStatusAlert('success');
+          setOpenAlert(true);
+        } else {
+          setContentAlert(result.message);
+          setStatusAlert('error');
+          setOpenAlert(true);
         }
       })
     } else if (queryType == 'image') {
       FinderServices.getByFaceImage(faceImage ? faceImage.split(",")[1] : "").then(result => {
+        console.log(result, 'face-image')
         if (result?.success) {
           setTableData({...tableData, rows: result.data});
+          setContentAlert(result.message);
+          setStatusAlert('success');
+          setOpenAlert(true);
+        } else {
+          setContentAlert(result.message);
+          setStatusAlert('error');
+          setOpenAlert(true);
         }
       })
     }
