@@ -6,6 +6,8 @@ import MDButton from "components/MDButton";
 import MDBox from "components/MDBox";
 import MDInput from "components/MDInput";
 import MDTypography from "components/MDTypography";
+import { DataContext } from "App";
+import { useContext } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Box, Button } from "@mui/material";
 import * as ParkingTicketServices from 'services/ParkingTicketsServices';
@@ -30,6 +32,7 @@ const Client = () => {
   const canvasRef = useRef(null);
   const [currImageData, setCurrImageData] = useState();
   const [cameraActive, setCameraActive] = useState(false);
+  const {setOpenAlert, setContentAlert, setStatusAlert} = useContext(DataContext);
   const [type, setType] = useState({id: 'checkin', label: 'Check-in'});
   const handleOpenCamera = async () => {
     try {
@@ -126,16 +129,26 @@ const Client = () => {
       ParkingTicketServices.checkIn(data).then(result => {
         console.log('checkin', result);
         if (result?.success) {
-
+          setContentAlert(result.message);
+          setStatusAlert('success');
+          setOpenAlert(true);
         } else {
-          console.log(result.message)
+          setContentAlert(result.message);
+          setStatusAlert('error');
+          setOpenAlert(true);
         }
       })
     } else if (type.id == 'checkout') {
       ParkingTicketServices.checkOut(data).then(result => {
         console.log('checkout', result);
         if (result?.success) {
-
+          setContentAlert(result.message);
+          setStatusAlert('success');
+          setOpenAlert(true);
+        } else {
+          setContentAlert(result.message);
+          setStatusAlert('error');
+          setOpenAlert(true);
         }
       })
     }

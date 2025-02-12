@@ -137,7 +137,7 @@ function BillingInformation({setDetail, detail, user, setUser}) {
         setUser(result.data);
         handleStopCamera();
       } else {
-        setContentAlert('Cannot recognized, please register your face for further processing!')
+        setContentAlert(result.message)
         setStatusAlert('error');
         setOpenAlert(true);
 
